@@ -66,7 +66,7 @@ final class UsageStore {
         lastRefresh = Date()
         if settings.notificationsEnabled {
             let fresh = results.compactMap { try? $0.1.get() }
-            notifier.check(snapshots: fresh, threshold: settings.notificationThreshold)
+            notifier.check(snapshots: fresh, settings: settings)
         }
     }
 

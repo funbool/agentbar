@@ -34,6 +34,8 @@
 "settings.notifications.threshold" = "Threshold";
 "settings.notifications.hint" = "With auto-refresh off, notifications are checked only when you open the panel.";
 "settings.notifications.denied" = "Notifications are disabled in System Settings.";
+"settings.notifications.perLimit" = "Per-limit rules";
+"settings.notifications.defaultThreshold" = "Default (%d%%)";
 "settings.language" = "Language";
 "settings.language.system" = "System";
 "settings.language.en" = "English";

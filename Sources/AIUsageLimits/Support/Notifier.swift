@@ -25,14 +25,16 @@ final class Notifier {
     }
 
     /// Pure decision logic, separated for testing: which windows need a notification right now.
+    /// `threshold` returns the effective threshold for a window, or nil when notifications are off for it.
     nonisolated static func dueWindows(
         snapshots: [ProviderSnapshot],
-        threshold: Int,
+        threshold: (Provider, UsageWindow) -> Int?,
         alreadySent: Set<String>
     ) -> [(ProviderSnapshot, UsageWindow, key: String)] {
         var due: [(ProviderSnapshot, UsageWindow, key: String)] = []
         for snap in snapshots {
-            for window in snap.windows where window.usedPercent >= Double(threshold) {
+            for window in snap.windows {
+                guard let limit = threshold(snap.provider, window), window.usedPercent >= Double(limit) else { continue }
                 let key = dedupeKey(snap.provider, window)
                 if !alreadySent.contains(key) { due.append((snap, window, key: key)) }
             }
@@ -45,9 +47,12 @@ final class Notifier {
         return "\(provider.rawValue)|\(window.id)|\(reset)"
     }
 
-    func check(snapshots: [ProviderSnapshot], threshold: Int) {
+    func check(snapshots: [ProviderSnapshot], settings: Settings) {
         var sent = Set(defaults.stringArray(forKey: sentKey) ?? [])
-        let due = Self.dueWindows(snapshots: snapshots, threshold: threshold, alreadySent: sent)
+        let due = Self.dueWindows(snapshots: snapshots, threshold: { provider, window in
+            let rule = settings.rule(for: provider, window)
+            return rule.enabled ? (rule.threshold ?? settings.notificationThreshold) : nil
+        }, alreadySent: sent)
         guard !due.isEmpty else { return }
         for (snap, window, key) in due {
             sent.insert(key)

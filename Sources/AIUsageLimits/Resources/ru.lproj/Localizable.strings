@@ -34,6 +34,8 @@
 "settings.notifications.threshold" = "Порог";
 "settings.notifications.hint" = "При выключенном автообновлении проверка происходит только при открытии панели.";
 "settings.notifications.denied" = "Уведомления отключены в Системных настройках.";
+"settings.notifications.perLimit" = "Правила по лимитам";
+"settings.notifications.defaultThreshold" = "Общий (%d%%)";
 "settings.language" = "Язык";
 "settings.language.system" = "Системный";
 "settings.language.en" = "English";

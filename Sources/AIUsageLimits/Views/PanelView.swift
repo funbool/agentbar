@@ -20,7 +20,7 @@ struct PanelView: View {
                     provider: provider,
                     snapshot: store.snapshots[provider],
                     error: store.errors[provider],
-                    threshold: store.settings.notificationThreshold,
+                    settings: store.settings,
                     now: now)
                 if provider != providers.last { Divider() }
             }

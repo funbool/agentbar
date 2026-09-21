@@ -11,6 +11,12 @@ enum AppLanguage: String, CaseIterable, Identifiable {
     var id: String { rawValue }
 }
 
+/// Per-window override of the notification behaviour. `threshold == nil` inherits the global threshold.
+struct NotificationRule: Codable, Equatable {
+    var enabled: Bool = true
+    var threshold: Int? = nil
+}
+
 /// User preferences backed by UserDefaults. Observable so views and the store react to changes.
 @MainActor
 @Observable
@@ -34,6 +40,12 @@ final class Settings {
     private(set) var enabledProviders: Set<Provider> {
         didSet { defaults.set(enabledProviders.map(\.rawValue).sorted(), forKey: "enabledProviders") }
     }
+    /// Keyed by `ruleKey(provider, window)`; absent means "enabled, global threshold".
+    private(set) var notificationRules: [String: NotificationRule] {
+        didSet {
+            if let data = try? JSONEncoder().encode(notificationRules) { defaults.set(data, forKey: "notificationRules") }
+        }
+    }
 
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
@@ -47,6 +59,28 @@ final class Settings {
         } else {
             enabledProviders = Set(Provider.allCases)
         }
+        notificationRules = defaults.data(forKey: "notificationRules")
+            .flatMap { try? JSONDecoder().decode([String: NotificationRule].self, from: $0) } ?? [:]
+    }
+
+    // MARK: Notification rules
+
+    nonisolated static func ruleKey(_ provider: Provider, _ window: UsageWindow) -> String {
+        "\(provider.rawValue)|\(window.id)"
+    }
+
+    func rule(for provider: Provider, _ window: UsageWindow) -> NotificationRule {
+        notificationRules[Self.ruleKey(provider, window)] ?? NotificationRule()
+    }
+
+    func setRule(_ rule: NotificationRule, for provider: Provider, _ window: UsageWindow) {
+        let key = Self.ruleKey(provider, window)
+        if rule == NotificationRule() { notificationRules[key] = nil } else { notificationRules[key] = rule }
+    }
+
+    /// Effective threshold for a window: its own override or the global one.
+    func effectiveThreshold(for provider: Provider, _ window: UsageWindow) -> Int {
+        rule(for: provider, window).threshold ?? notificationThreshold
     }
 
     func isEnabled(_ provider: Provider) -> Bool { enabledProviders.contains(provider) }

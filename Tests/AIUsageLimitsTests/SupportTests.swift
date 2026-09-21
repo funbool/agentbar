@@ -42,3 +42,28 @@ final class FormattersTests: XCTestCase {
         XCTAssertEqual(UsageWindow(kind: .fiveHour, usedPercent: -3).usedPercent, 0)
     }
 }
+
+@MainActor
+final class SettingsRulesTests: XCTestCase {
+    func testRulesRoundTripAndDefaults() {
+        let defaults = UserDefaults(suiteName: "test.rules.\(UUID().uuidString)")!
+        let settings = Settings(defaults: defaults)
+        settings.notificationThreshold = 80
+        let weekly = UsageWindow(kind: .weekly, usedPercent: 0)
+        let fable = UsageWindow(kind: .weeklyScoped, label: "Fable", usedPercent: 0)
+
+        XCTAssertEqual(settings.rule(for: .claude, weekly), NotificationRule())
+        XCTAssertEqual(settings.effectiveThreshold(for: .claude, weekly), 80)
+
+        settings.setRule(NotificationRule(enabled: false, threshold: nil), for: .claude, weekly)
+        settings.setRule(NotificationRule(enabled: true, threshold: 95), for: .claude, fable)
+        XCTAssertEqual(settings.effectiveThreshold(for: .claude, fable), 95)
+
+        let reloaded = Settings(defaults: defaults)
+        XCTAssertFalse(reloaded.rule(for: .claude, weekly).enabled)
+        XCTAssertEqual(reloaded.rule(for: .claude, fable).threshold, 95)
+        // Resetting to defaults removes the stored entry.
+        reloaded.setRule(NotificationRule(), for: .claude, weekly)
+        XCTAssertEqual(reloaded.rule(for: .claude, weekly), NotificationRule())
+    }
+}

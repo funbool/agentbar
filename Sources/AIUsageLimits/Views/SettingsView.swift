@@ -37,6 +37,17 @@ struct SettingsView: View {
                 }
             }
 
+            if settings.notificationsEnabled {
+                Section(L("settings.notifications.perLimit")) {
+                    ForEach(store.visibleProviders) { provider in
+                        Text(provider.displayName).font(.headline)
+                        ForEach(knownWindows(for: provider)) { window in
+                            ruleRow(provider: provider, window: window, settings: settings)
+                        }
+                    }
+                }
+            }
+
             Section(L("settings.providers")) {
                 ForEach(Provider.allCases) { provider in
                     Toggle(provider.displayName, isOn: Binding(
@@ -64,6 +75,39 @@ struct SettingsView: View {
         .frame(width: 380)
         .navigationTitle(L("settings.title"))
         .task { notificationsDenied = await notifier.authorizationDenied() }
+    }
+
+    /// Windows the user can configure: whatever the last fetch returned, plus the always-present ones
+    /// so the list is complete before the first refresh.
+    private func knownWindows(for provider: Provider) -> [UsageWindow] {
+        let staticKinds: [UsageWindow.Kind] = switch provider {
+        case .claude, .codex: [.fiveHour, .weekly]
+        case .cursor: [.monthly, .autoComposer, .apiModels, .onDemand, .grok]
+        }
+        var windows = store.snapshots[provider]?.windows ?? []
+        for kind in staticKinds where !windows.contains(where: { $0.kind == kind }) {
+            windows.append(UsageWindow(kind: kind, usedPercent: 0))
+        }
+        return windows
+    }
+
+    private func ruleRow(provider: Provider, window: UsageWindow, settings: Settings) -> some View {
+        let rule = settings.rule(for: provider, window)
+        return HStack {
+            Toggle(window.title, isOn: Binding(
+                get: { rule.enabled },
+                set: { settings.setRule(NotificationRule(enabled: $0, threshold: rule.threshold), for: provider, window) }))
+            Spacer()
+            Picker("", selection: Binding(
+                get: { rule.threshold ?? 0 },
+                set: { settings.setRule(NotificationRule(enabled: rule.enabled, threshold: $0 == 0 ? nil : $0), for: provider, window) })) {
+                Text(String(format: L("settings.notifications.defaultThreshold"), settings.notificationThreshold)).tag(0)
+                ForEach(Settings.notificationThresholds, id: \.self) { Text("\($0)%").tag($0) }
+            }
+            .labelsHidden()
+            .fixedSize()
+            .disabled(!rule.enabled)
+        }
     }
 
     private func intervalLabel(_ interval: RefreshInterval) -> String {

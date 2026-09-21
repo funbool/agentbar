@@ -4,7 +4,7 @@ struct ProviderSectionView: View {
     let provider: Provider
     let snapshot: ProviderSnapshot?
     let error: ProviderError?
-    let threshold: Int
+    let settings: Settings
     let now: Date
 
     var body: some View {
@@ -26,7 +26,7 @@ struct ProviderSectionView: View {
             }
             if let snapshot {
                 ForEach(snapshot.windows) { window in
-                    WindowRowView(window: window, threshold: threshold, now: now)
+                    WindowRowView(window: window, threshold: settings.effectiveThreshold(for: provider, window), now: now)
                 }
             } else if error == nil {
                 Text(L("panel.never"))
