@@ -87,9 +87,7 @@
 "stats.otherModels" = "other";
 "settings.tab.general" = "General";
 "settings.tab.notifications" = "Notifications";
-"settings.notifications.perLimitHint" = "Mute a limit or give it its own threshold. The bell next to each limit in the menu bar panel opens the same settings.";
-"panel.rule.help" = "Notification for this limit";
-"panel.rule.notifyThis" = "Notify for this limit";
+"settings.notifications.perLimitHint" = "Mute a limit or give it its own threshold. A bell next to a limit in the menu bar panel means notifications are on for it.";
 "panel.rule.current" = "Now %@, notifies at %d%%.";
 "settings.updates" = "Updates";
 "settings.updates.version" = "AgentBar %@";

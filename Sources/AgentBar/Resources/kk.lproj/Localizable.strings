@@ -82,9 +82,7 @@
 "stats.otherModels" = "басқа";
 "settings.tab.general" = "Негізгі";
 "settings.tab.notifications" = "Хабарландырулар";
-"settings.notifications.perLimitHint" = "Лимитті өшіріңіз немесе оған жеке шек қойыңыз. Панельдегі лимиттің жанындағы қоңырау дәл осы баптауларды ашады.";
-"panel.rule.help" = "Осы лимит үшін хабарландыру";
-"panel.rule.notifyThis" = "Осы лимит туралы хабарлау";
+"settings.notifications.perLimitHint" = "Лимитті өшіріңіз немесе оған жеке шек қойыңыз. Панельдегі лимиттің жанындағы қоңырау ол үшін хабарландырулар қосулы екенін білдіреді.";
 "panel.rule.current" = "Қазір %@, хабарландыру %d%% кезінде.";
 "settings.updates" = "Жаңартулар";
 "settings.updates.version" = "AgentBar %@";

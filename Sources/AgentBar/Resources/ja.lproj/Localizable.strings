@@ -82,9 +82,7 @@
 "stats.otherModels" = "その他";
 "settings.tab.general" = "一般";
 "settings.tab.notifications" = "通知";
-"settings.notifications.perLimitHint" = "上限をミュートしたり、個別のしきい値を設定できます。メニューバーパネルの各上限の横にあるベルからも同じ設定を開けます。";
-"panel.rule.help" = "この上限の通知";
-"panel.rule.notifyThis" = "この上限について通知する";
+"settings.notifications.perLimitHint" = "上限をミュートしたり、個別のしきい値を設定できます。メニューバーパネルで上限の横にベルが表示されている場合、その上限の通知がオンになっています。";
 "panel.rule.current" = "現在 %@、%d%% で通知。";
 "settings.updates" = "アップデート";
 "settings.updates.version" = "AgentBar %@";

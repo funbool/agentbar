@@ -82,9 +82,7 @@
 "stats.otherModels" = "outros";
 "settings.tab.general" = "Geral";
 "settings.tab.notifications" = "Notificações";
-"settings.notifications.perLimitHint" = "Silencie um limite ou dê-lhe um limiar próprio. O sino junto a cada limite no painel abre as mesmas definições.";
-"panel.rule.help" = "Notificação para este limite";
-"panel.rule.notifyThis" = "Notificar para este limite";
+"settings.notifications.perLimitHint" = "Silencie um limite ou dê-lhe um limiar próprio. Um sino junto a um limite no painel significa que as notificações estão ativas para ele.";
 "panel.rule.current" = "Agora %@, notifica a %d%%.";
 "settings.updates" = "Atualizações";
 "settings.updates.version" = "AgentBar %@";

@@ -82,9 +82,7 @@
 "stats.otherModels" = "其他";
 "settings.tab.general" = "一般";
 "settings.tab.notifications" = "通知";
-"settings.notifications.perLimitHint" = "可將某個額度靜音或為其單獨設定門檻。選單列面板中每個額度旁的鈴鐺可開啟相同設定。";
-"panel.rule.help" = "此額度的通知";
-"panel.rule.notifyThis" = "對此額度通知";
+"settings.notifications.perLimitHint" = "可將某個額度靜音或為其單獨設定門檻。面板中額度旁的鈴鐺表示該額度的通知已開啟。";
 "panel.rule.current" = "目前 %@，達到 %d%% 時通知。";
 "settings.updates" = "更新";
 "settings.updates.version" = "AgentBar %@";

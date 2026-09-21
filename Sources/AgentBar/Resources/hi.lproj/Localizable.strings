@@ -82,9 +82,7 @@
 "stats.otherModels" = "अन्य";
 "settings.tab.general" = "सामान्य";
 "settings.tab.notifications" = "सूचनाएँ";
-"settings.notifications.perLimitHint" = "किसी सीमा को म्यूट करें या उसे अपना स्तर दें। मेनू बार पैनल में हर सीमा के पास की घंटी यही सेटिंग्स खोलती है।";
-"panel.rule.help" = "इस सीमा के लिए सूचना";
-"panel.rule.notifyThis" = "इस सीमा के लिए सूचित करें";
+"settings.notifications.perLimitHint" = "किसी सीमा को म्यूट करें या उसे अपना स्तर दें। पैनल में सीमा के पास की घंटी का मतलब है कि उसके लिए सूचनाएँ चालू हैं।";
 "panel.rule.current" = "अभी %@, %d%% पर सूचना।";
 "settings.updates" = "अपडेट";
 "settings.updates.version" = "AgentBar %@";

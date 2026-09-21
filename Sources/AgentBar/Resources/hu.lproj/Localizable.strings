@@ -82,9 +82,7 @@
 "stats.otherModels" = "egyéb";
 "settings.tab.general" = "Általános";
 "settings.tab.notifications" = "Értesítések";
-"settings.notifications.perLimitHint" = "Némíts el egy keretet, vagy adj neki saját küszöböt. A panelen a keret melletti csengő ugyanezeket a beállításokat nyitja meg.";
-"panel.rule.help" = "Értesítés ehhez a kerethez";
-"panel.rule.notifyThis" = "Értesítés ennél a keretnél";
+"settings.notifications.perLimitHint" = "Némíts el egy keretet, vagy adj neki saját küszöböt. A panelen a keret melletti csengő azt jelzi, hogy az értesítések be vannak kapcsolva hozzá.";
 "panel.rule.current" = "Most %@, értesítés %d%%-nál.";
 "settings.updates" = "Frissítések";
 "settings.updates.version" = "AgentBar %@";

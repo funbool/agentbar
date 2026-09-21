@@ -59,7 +59,7 @@ O AgentBar não renova tokens. Se um fornecedor mostrar *sessão expirada*, abra
 - Clique no ícone da barra de menus: todos os fornecedores são atualizados de imediato; durante o carregamento mantêm-se os valores anteriores.
 - As barras são verdes abaixo de 60 %, amarelas acima e vermelhas ao atingir o limiar de notificação.
 - Cada limite mostra o tempo restante e o momento exato do reinício, p. ex. *reinicia em 2h 15m · qui, 24 set 20:00*.
-- O sino junto a um limite abre a sua regra de notificação (ligar/desligar, limiar).
+- Um sino junto a um limite significa que as notificações estão ativas para ele (configuradas nas Definições).
 - Rodapé: estatísticas · atualizar · definições · sair.
 
 ## Estatísticas de utilização
@@ -79,7 +79,7 @@ Indexar 700 MB de transcrições demora cerca de 10 segundos na primeira vez e b
 ## Notificações
 
 - Ative as notificações em Definições → Notificações e escolha um limiar predefinido (50–95 %).
-- Qualquer limite pode ser silenciado ou ter um limiar próprio — nas Definições ou pelo sino no painel.
+- Qualquer limite pode ser silenciado ou ter um limiar próprio em Definições → Notificações.
 - Recebe uma notificação por limite e por ciclo de reinício.
 - Os limites são verificados a cada atualização: por agenda se a atualização automática estiver ligada; caso contrário, só ao abrir o painel.
 

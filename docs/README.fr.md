@@ -59,7 +59,7 @@ AgentBar ne renouvelle pas les jetons. Si un fournisseur indique *session expir�
 - Cliquez sur l'icône de la barre de menus : tous les fournisseurs sont actualisés immédiatement ; les valeurs en cache restent visibles pendant le chargement.
 - Les barres sont vertes sous 60 %, jaunes au-dessus, rouges dès que le seuil de notification est atteint.
 - Chaque limite affiche le temps restant et l'instant exact de réinitialisation, par ex. *réinitialisation dans 2h 15m · jeu. 24 sept. 20:00*.
-- La cloche à côté d'une limite ouvre sa règle de notification (on/off, seuil).
+- Une cloche à côté d'une limite signifie que les notifications sont actives pour elle (configurées dans les réglages).
 - Pied de panneau : statistiques · actualiser · réglages · quitter.
 
 ## Statistiques d'utilisation
@@ -79,7 +79,7 @@ Indexer 700 Mo de transcriptions prend environ 10 secondes la première fois et 
 ## Notifications
 
 - Activez les notifications dans Réglages → Notifications et choisissez un seuil par défaut (50–95 %).
-- Chaque limite peut être coupée ou recevoir son propre seuil — depuis les réglages ou via la cloche du panneau.
+- Chaque limite peut être coupée ou recevoir son propre seuil dans Réglages → Notifications.
 - Vous recevez une notification par limite et par cycle de réinitialisation.
 - Les limites sont vérifiées à chaque actualisation : selon la planification si l'actualisation automatique est active, sinon seulement à l'ouverture du panneau.
 

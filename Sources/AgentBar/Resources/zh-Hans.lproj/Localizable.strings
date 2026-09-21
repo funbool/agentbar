@@ -82,9 +82,7 @@
 "stats.otherModels" = "其他";
 "settings.tab.general" = "通用";
 "settings.tab.notifications" = "通知";
-"settings.notifications.perLimitHint" = "可将某个额度静音或为其单独设置阈值。菜单栏面板中每个额度旁的铃铛可打开相同设置。";
-"panel.rule.help" = "此额度的通知";
-"panel.rule.notifyThis" = "对此额度通知";
+"settings.notifications.perLimitHint" = "可将某个额度静音或为其单独设置阈值。面板中额度旁的铃铛表示该额度的通知已开启。";
 "panel.rule.current" = "当前 %@，达到 %d%% 时通知。";
 "settings.updates" = "更新";
 "settings.updates.version" = "AgentBar %@";

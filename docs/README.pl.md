@@ -59,7 +59,7 @@ AgentBar nie odświeża tokenów. Jeśli dostawca pokazuje *sesja wygasła*, otw
 - Kliknij ikonę w pasku menu: wszyscy dostawcy są odświeżani natychmiast; w trakcie ładowania widać poprzednie wartości.
 - Paski są zielone poniżej 60 %, żółte powyżej, czerwone po osiągnięciu progu powiadomienia.
 - Każdy limit pokazuje pozostały czas i dokładny moment resetu, np. *reset za 2h 15m · czw, 24 wrz 20:00*.
-- Dzwonek obok limitu otwiera jego regułę powiadomień (wł./wył., próg).
+- Dzwonek obok limitu oznacza, że powiadomienia dla niego są włączone (konfiguruje się je w Ustawieniach).
 - Stopka: statystyki · odśwież · ustawienia · zakończ.
 
 ## Statystyki użycia
@@ -79,7 +79,7 @@ Indeksowanie 700 MB transkrypcji zajmuje ok. 10 sekund za pierwszym razem i znac
 ## Powiadomienia
 
 - Włącz powiadomienia w Ustawienia → Powiadomienia i wybierz próg domyślny (50–95 %).
-- Każdy limit można wyciszyć lub nadać mu własny próg — z Ustawień albo dzwonkiem w panelu.
+- Każdy limit można wyciszyć lub nadać mu własny próg w Ustawienia → Powiadomienia.
 - Dostajesz jedno powiadomienie na limit na cykl resetu.
 - Limity są sprawdzane przy każdym odświeżeniu: według harmonogramu, jeśli włączono automatyczne odświeżanie, w przeciwnym razie tylko przy otwarciu panelu.
 

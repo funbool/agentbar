@@ -82,9 +82,7 @@
 "stats.otherModels" = "andere";
 "settings.tab.general" = "Allgemein";
 "settings.tab.notifications" = "Benachrichtigungen";
-"settings.notifications.perLimitHint" = "Ein Limit stummschalten oder eine eigene Schwelle setzen. Die Glocke neben jedem Limit im Menüleisten-Panel öffnet dieselben Einstellungen.";
-"panel.rule.help" = "Benachrichtigung für dieses Limit";
-"panel.rule.notifyThis" = "Für dieses Limit benachrichtigen";
+"settings.notifications.perLimitHint" = "Ein Limit stummschalten oder eine eigene Schwelle setzen. Eine Glocke neben einem Limit im Panel bedeutet, dass Benachrichtigungen dafür aktiv sind.";
 "panel.rule.current" = "Jetzt %@, Benachrichtigung bei %d%%.";
 "settings.updates" = "Updates";
 "settings.updates.version" = "AgentBar %@";

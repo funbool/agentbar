@@ -82,9 +82,7 @@
 "stats.otherModels" = "diğer";
 "settings.tab.general" = "Genel";
 "settings.tab.notifications" = "Bildirimler";
-"settings.notifications.perLimitHint" = "Bir limiti sessize alın ya da kendi eşiğini verin. Paneldeki her limitin yanındaki zil aynı ayarları açar.";
-"panel.rule.help" = "Bu limit için bildirim";
-"panel.rule.notifyThis" = "Bu limit için bildir";
+"settings.notifications.perLimitHint" = "Bir limiti sessize alın ya da kendi eşiğini verin. Paneldeki bir limitin yanındaki zil, o limit için bildirimlerin açık olduğunu gösterir.";
 "panel.rule.current" = "Şu an %@, bildirim %%%d seviyesinde.";
 "settings.updates" = "Güncellemeler";
 "settings.updates.version" = "AgentBar %@";

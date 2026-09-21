@@ -59,7 +59,7 @@ AgentBar tokeny neobnovuje. Pokud poskytovatel hlásí *relace vypršela*, otev�
 - Klik na ikonu v řádku nabídek: všichni poskytovatelé se okamžitě obnoví; během načítání zůstávají vidět předchozí hodnoty.
 - Ukazatele jsou zelené pod 60 %, žluté nad tím, červené po dosažení prahu oznámení.
 - Každý limit ukazuje zbývající čas a přesný okamžik resetu, např. *reset za 2h 15m · čt 24. 9. 20:00*.
-- Zvonek u limitu otevře jeho pravidlo oznámení (zap./vyp., práh).
+- Zvonek u limitu znamená, že jsou pro něj oznámení zapnutá (nastavují se v Nastavení).
 - Patička: statistiky · obnovit · nastavení · ukončit.
 
 ## Statistiky využití
@@ -79,7 +79,7 @@ Indexace 700 MB přepisů trvá poprvé asi 10 sekund a poté výrazně méně n
 ## Oznámení
 
 - Zapněte oznámení v Nastavení → Oznámení a zvolte výchozí práh (50–95 %).
-- Každý limit lze ztlumit nebo mu dát vlastní práh — z Nastavení nebo přes zvonek v panelu.
+- Každý limit lze ztlumit nebo mu dát vlastní práh v Nastavení → Oznámení.
 - Dostanete jedno oznámení na limit a cyklus resetu.
 - Limity se kontrolují při každém obnovení: podle plánu, pokud je zapnuté automatické obnovování, jinak jen při otevření panelu.
 

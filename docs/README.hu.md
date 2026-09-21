@@ -59,7 +59,7 @@ Az AgentBar nem frissít tokeneket. Ha egy szolgáltatónál *lejárt munkamenet
 - Kattints a menüsor ikonjára: minden szolgáltató azonnal frissül; betöltés közben a korábbi értékek maradnak láthatók.
 - A sávok 60 % alatt zöldek, felette sárgák, az értesítési küszöb elérésekor pirosak.
 - Minden keret mutatja a hátralévő időt és a nullázás pontos időpontját, pl. *nullázás 2ó 15p múlva · csüt., szept. 24. 20:00*.
-- A keret melletti csengő megnyitja annak értesítési szabályát (be/ki, küszöb).
+- A keret melletti csengő azt jelzi, hogy az értesítések be vannak kapcsolva hozzá (a Beállításokban állítható).
 - Lábléc: statisztika · frissítés · beállítások · kilépés.
 
 ## Használati statisztika
@@ -79,7 +79,7 @@ A lábléc diagram gombja megnyitja a statisztikaablakot. Fent válthatsz szolg�
 ## Értesítések
 
 - Kapcsold be az értesítéseket a Beállítások → Értesítések alatt, és válassz alapértelmezett küszöböt (50–95 %).
-- Bármely keret némítható vagy saját küszöböt kaphat — a Beállításokból vagy a panel csengőjével.
+- Bármely keret némítható vagy saját küszöböt kaphat a Beállítások → Értesítések alatt.
 - Keretenként és nullázási ciklusonként egy értesítés érkezik.
 - A kereteket minden frissítéskor ellenőrzi: ütemezetten, ha be van kapcsolva az automatikus frissítés, egyébként csak a panel megnyitásakor.
 

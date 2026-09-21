@@ -82,9 +82,7 @@
 "stats.otherModels" = "autres";
 "settings.tab.general" = "Général";
 "settings.tab.notifications" = "Notifications";
-"settings.notifications.perLimitHint" = "Coupez une limite ou donnez-lui son propre seuil. La cloche à côté de chaque limite dans le panneau ouvre les mêmes réglages.";
-"panel.rule.help" = "Notification pour cette limite";
-"panel.rule.notifyThis" = "Notifier pour cette limite";
+"settings.notifications.perLimitHint" = "Coupez une limite ou donnez-lui son propre seuil. Une cloche à côté d'une limite dans le panneau signifie que les notifications sont actives pour elle.";
 "panel.rule.current" = "Actuellement %@, notification à %d%%.";
 "settings.updates" = "Mises à jour";
 "settings.updates.version" = "AgentBar %@";

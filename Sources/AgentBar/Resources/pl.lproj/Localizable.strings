@@ -82,9 +82,7 @@
 "stats.otherModels" = "inne";
 "settings.tab.general" = "Ogólne";
 "settings.tab.notifications" = "Powiadomienia";
-"settings.notifications.perLimitHint" = "Wycisz limit albo nadaj mu własny próg. Dzwonek obok każdego limitu w panelu otwiera te same ustawienia.";
-"panel.rule.help" = "Powiadomienie dla tego limitu";
-"panel.rule.notifyThis" = "Powiadamiaj o tym limicie";
+"settings.notifications.perLimitHint" = "Wycisz limit albo nadaj mu własny próg. Dzwonek obok limitu w panelu oznacza, że powiadomienia dla niego są włączone.";
 "panel.rule.current" = "Teraz %@, powiadomienie przy %d%%.";
 "settings.updates" = "Aktualizacje";
 "settings.updates.version" = "AgentBar %@";

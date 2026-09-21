@@ -59,7 +59,7 @@ AgentBar token yenilemez. Bir sağlayıcı *oturum süresi doldu* gösteriyorsa 
 - Menü çubuğu simgesine tıklayın: tüm sağlayıcılar hemen yenilenir; yüklenirken önceki değerler gösterilir.
 - Çubuklar %60'ın altında yeşil, üstünde sarı, bildirim eşiğine ulaşınca kırmızıdır.
 - Her limit kalan süreyi ve tam sıfırlanma anını gösterir, örn. *2s 15d sonra sıfırlanır · Per 24 Eyl 20:00*.
-- Limitin yanındaki zil, bildirim kuralını açar (açık/kapalı, eşik).
+- Bir limitin yanındaki zil, o limit için bildirimlerin açık olduğunu gösterir (Ayarlar'dan yapılandırılır).
 - Alt çubuk: istatistikler · yenile · ayarlar · çık.
 
 ## Kullanım istatistikleri
@@ -79,7 +79,7 @@ Alt çubuktaki grafik düğmesi istatistik penceresini açar. Üstte sağlayıc�
 ## Bildirimler
 
 - Ayarlar → Bildirimler'den bildirimleri açın ve varsayılan eşiği seçin (%50–95).
-- Her limit sessize alınabilir ya da kendi eşiğini alabilir — Ayarlar'dan veya paneldeki zilden.
+- Her limit Ayarlar → Bildirimler'den sessize alınabilir ya da kendi eşiğini alabilir.
 - Her limit için sıfırlanma döngüsü başına bir bildirim alırsınız.
 - Limitler her yenilemede denetlenir: otomatik yenileme açıksa zamanlamaya göre, değilse yalnızca panel açıldığında.
 

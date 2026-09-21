@@ -82,9 +82,7 @@
 "stats.otherModels" = "інші";
 "settings.tab.general" = "Основні";
 "settings.tab.notifications" = "Сповіщення";
-"settings.notifications.perLimitHint" = "Вимкніть ліміт або задайте йому власний поріг. Дзвіночок поруч із лімітом у панелі відкриває ті самі налаштування.";
-"panel.rule.help" = "Сповіщення для цього ліміту";
-"panel.rule.notifyThis" = "Сповіщати про цей ліміт";
+"settings.notifications.perLimitHint" = "Вимкніть ліміт або задайте йому власний поріг. Дзвіночок поруч із лімітом у панелі означає, що сповіщення для нього ввімкнено.";
 "panel.rule.current" = "Зараз %@, сповіщення при %d%%.";
 "settings.updates" = "Оновлення";
 "settings.updates.version" = "AgentBar %@";

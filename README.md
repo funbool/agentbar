@@ -59,7 +59,7 @@ AgentBar does not refresh tokens itself. If a provider shows *session expired*, 
 - Click the menu bar icon: every provider is refreshed immediately; cached values are shown while loading.
 - Bars are green below 60 %, yellow above, red once the notification threshold is reached.
 - Each limit shows the time left and the exact reset moment, e.g. *resets in 2h 15m · Thu 24 Sep 20:00*.
-- The bell next to a limit opens its notification rule (on/off, threshold).
+- A bell next to a limit means notifications are on for it (configured in Settings).
 - Footer: statistics · refresh · settings · quit.
 
 ## Usage statistics
@@ -79,7 +79,7 @@ Indexing 700 MB of transcripts takes about 10 seconds the first time and well un
 ## Notifications
 
 - Turn notifications on in Settings → Notifications and pick a default threshold (50–95 %).
-- Every limit can be muted or given its own threshold — from Settings or from the bell in the panel.
+- Every limit can be muted or given its own threshold in Settings → Notifications.
 - You get one notification per limit per reset cycle.
 - Limits are checked whenever the app refreshes: on a schedule if auto-refresh is on, otherwise only when you open the panel.
 

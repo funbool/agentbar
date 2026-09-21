@@ -82,9 +82,7 @@
 "stats.otherModels" = "ostatní";
 "settings.tab.general" = "Obecné";
 "settings.tab.notifications" = "Oznámení";
-"settings.notifications.perLimitHint" = "Ztlumte limit nebo mu dejte vlastní práh. Zvonek u každého limitu v panelu otevře stejná nastavení.";
-"panel.rule.help" = "Oznámení pro tento limit";
-"panel.rule.notifyThis" = "Upozorňovat na tento limit";
+"settings.notifications.perLimitHint" = "Ztlumte limit nebo mu dejte vlastní práh. Zvonek u limitu v panelu znamená, že jsou pro něj oznámení zapnutá.";
 "panel.rule.current" = "Nyní %@, upozornění při %d%%.";
 "settings.updates" = "Aktualizace";
 "settings.updates.version" = "AgentBar %@";

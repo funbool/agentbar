@@ -82,9 +82,7 @@
 "stats.otherModels" = "otros";
 "settings.tab.general" = "General";
 "settings.tab.notifications" = "Notificaciones";
-"settings.notifications.perLimitHint" = "Silencia un límite o asígnale su propio umbral. La campana junto a cada límite en el panel abre estos mismos ajustes.";
-"panel.rule.help" = "Notificación para este límite";
-"panel.rule.notifyThis" = "Avisar para este límite";
+"settings.notifications.perLimitHint" = "Silencia un límite o asígnale su propio umbral. Una campana junto a un límite en el panel indica que las notificaciones están activas para él.";
 "panel.rule.current" = "Ahora %@, aviso al %d%%.";
 "settings.updates" = "Actualizaciones";
 "settings.updates.version" = "AgentBar %@";

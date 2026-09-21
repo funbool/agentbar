@@ -59,7 +59,7 @@ AgentBar erneuert keine Tokens. Zeigt ein Anbieter *Sitzung abgelaufen*, öffne 
 - Klick auf das Menüleisten-Symbol: alle Anbieter werden sofort aktualisiert; während des Ladens bleiben die letzten Werte sichtbar.
 - Balken sind grün unter 60 %, gelb darüber, rot ab der Benachrichtigungsschwelle.
 - Jedes Limit zeigt die Restzeit und den genauen Reset-Zeitpunkt, z. B. *Reset in 2h 15m · Do, 24. Sep 20:00*.
-- Die Glocke neben einem Limit öffnet dessen Benachrichtigungsregel (an/aus, Schwelle).
+- Eine Glocke neben einem Limit bedeutet, dass Benachrichtigungen dafür aktiv sind (konfiguriert in den Einstellungen).
 - Fußzeile: Statistik · Aktualisieren · Einstellungen · Beenden.
 
 ## Nutzungsstatistik
@@ -79,7 +79,7 @@ Das Indexieren von 700 MB Transkripten dauert beim ersten Mal etwa 10 Sekunden, 
 ## Benachrichtigungen
 
 - Aktiviere Benachrichtigungen unter Einstellungen → Benachrichtigungen und wähle eine Standardschwelle (50–95 %).
-- Jedes Limit kann stummgeschaltet oder mit eigener Schwelle versehen werden — in den Einstellungen oder über die Glocke im Panel.
+- Jedes Limit kann unter Einstellungen → Benachrichtigungen stummgeschaltet oder mit eigener Schwelle versehen werden.
 - Pro Limit und Reset-Zyklus gibt es eine Benachrichtigung.
 - Limits werden bei jeder Aktualisierung geprüft: nach Zeitplan bei aktiver automatischer Aktualisierung, sonst nur beim Öffnen des Panels.
 
