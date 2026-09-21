@@ -7,8 +7,38 @@ enum RefreshInterval: Int, CaseIterable, Identifiable {
 }
 
 enum AppLanguage: String, CaseIterable, Identifiable {
-    case system, en, ru
+    case system
+    case en, ru, uk, de, fr, es, ptPT = "pt-PT", ptBR = "pt-BR", pl, cs, hu, tr, kk, hi, ja, zhHans = "zh-Hans", zhHant = "zh-Hant"
     var id: String { rawValue }
+
+    /// `.lproj` folder name; nil for "follow the system".
+    var localeCode: String? { self == .system ? nil : rawValue }
+
+    /// Name in the language itself, so every user can find their own entry.
+    var nativeName: String {
+        switch self {
+        case .system: L("settings.language.system")
+        case .en: "English"
+        case .ru: "Русский"
+        case .uk: "Українська"
+        case .de: "Deutsch"
+        case .fr: "Français"
+        case .es: "Español"
+        case .ptPT: "Português (Portugal)"
+        case .ptBR: "Português (Brasil)"
+        case .pl: "Polski"
+        case .cs: "Čeština"
+        case .hu: "Magyar"
+        case .tr: "Türkçe"
+        case .kk: "Қазақша"
+        case .hi: "हिन्दी"
+        case .ja: "日本語"
+        case .zhHans: "简体中文"
+        case .zhHant: "繁體中文"
+        }
+    }
+
+    static var supportedCodes: [String] { allCases.compactMap(\.localeCode) }
 }
 
 /// Per-window override of the notification behaviour. `threshold == nil` inherits the global threshold.

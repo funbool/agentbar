@@ -42,7 +42,7 @@ struct SettingsView: View {
             Section {
                 Picker(L("settings.language"), selection: $settings.language) {
                     ForEach(AppLanguage.allCases) { lang in
-                        Text(L("settings.language.\(lang.rawValue)")).tag(lang)
+                        Text(lang.nativeName).tag(lang)
                     }
                 }
                 .onChange(of: settings.language) { _, lang in L10n.language = lang }

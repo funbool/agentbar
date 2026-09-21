@@ -38,8 +38,6 @@
 "settings.notifications.defaultThreshold" = "Общий (%d%%)";
 "settings.language" = "Язык";
 "settings.language.system" = "Системный";
-"settings.language.en" = "English";
-"settings.language.ru" = "Русский";
 "settings.providers" = "Провайдеры";
 "settings.launchAtLogin" = "Запускать при входе";
 

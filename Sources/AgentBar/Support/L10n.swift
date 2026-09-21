@@ -9,23 +9,17 @@ enum L10n {
     }
 
     static var locale: Locale {
-        switch language {
-        case .system: .current
-        case .en: Locale(identifier: "en")
-        case .ru: Locale(identifier: "ru")
-        }
+        language.localeCode.map { Locale(identifier: $0) } ?? .current
+    }
+
+    /// Resolved `.lproj` code: the explicit choice, or the best match for the system languages.
+    static var resolvedCode: String {
+        if let code = language.localeCode { return code }
+        return Bundle.preferredLocalizations(from: AppLanguage.supportedCodes, forPreferences: Locale.preferredLanguages).first ?? "en"
     }
 
     private static var bundle: Bundle {
-        let code: String
-        switch language {
-        case .system:
-            let preferred = Bundle.preferredLocalizations(from: ["en", "ru"], forPreferences: Locale.preferredLanguages)
-            code = preferred.first ?? "en"
-        case .en: code = "en"
-        case .ru: code = "ru"
-        }
-        if let path = AppResources.bundle.path(forResource: code, ofType: "lproj"), let b = Bundle(path: path) {
+        if let path = AppResources.bundle.path(forResource: resolvedCode, ofType: "lproj"), let b = Bundle(path: path) {
             return b
         }
         return AppResources.bundle
