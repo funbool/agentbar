@@ -1,0 +1,43 @@
+"app.name" = "AI Usage Limits";
+"panel.refresh" = "Refresh";
+"panel.settings" = "Settings…";
+"panel.quit" = "Quit";
+"panel.updated" = "Updated %@";
+"panel.never" = "Not loaded yet";
+"panel.noProviders" = "All providers are hidden. Enable them in Settings.";
+
+"window.fiveHour" = "5-hour";
+"window.weekly" = "Weekly";
+"window.weeklyOpus" = "Weekly · Opus";
+"window.weeklySonnet" = "Weekly · Sonnet";
+"window.monthly" = "Monthly plan";
+"window.onDemand" = "On-demand";
+"window.resetsIn" = "resets in %@";
+"window.resetsOn" = "resets %@";
+"window.ready" = "ready";
+
+"error.notLoggedIn" = "Not signed in — open %@";
+"error.tokenExpired" = "Session expired — open %@";
+"error.rateLimited" = "Too many requests, retry later";
+"error.network" = "Network error";
+"error.badResponse" = "Unexpected response";
+
+"settings.title" = "Settings";
+"settings.refresh" = "Auto-refresh";
+"settings.refresh.off" = "Off (only when opened)";
+"settings.refresh.every" = "Every %d min";
+"settings.notifications" = "Notifications";
+"settings.notifications.enabled" = "Notify when a limit is almost used up";
+"settings.notifications.threshold" = "Threshold";
+"settings.notifications.hint" = "With auto-refresh off, notifications are checked only when you open the panel.";
+"settings.notifications.denied" = "Notifications are disabled in System Settings.";
+"settings.language" = "Language";
+"settings.language.system" = "System";
+"settings.language.en" = "English";
+"settings.language.ru" = "Русский";
+"settings.providers" = "Providers";
+"settings.launchAtLogin" = "Launch at login";
+
+"notification.title" = "%@: %@ limit at %@";
+"notification.body" = "Resets in %@.";
+"notification.bodyNoReset" = "Consider slowing down.";

@@ -1,0 +1,43 @@
+"app.name" = "Лимиты AI";
+"panel.refresh" = "Обновить";
+"panel.settings" = "Настройки…";
+"panel.quit" = "Выйти";
+"panel.updated" = "Обновлено %@";
+"panel.never" = "Ещё не загружено";
+"panel.noProviders" = "Все провайдеры скрыты. Включите их в настройках.";
+
+"window.fiveHour" = "5 часов";
+"window.weekly" = "Неделя";
+"window.weeklyOpus" = "Неделя · Opus";
+"window.weeklySonnet" = "Неделя · Sonnet";
+"window.monthly" = "Месячный план";
+"window.onDemand" = "Сверх плана";
+"window.resetsIn" = "сброс через %@";
+"window.resetsOn" = "сброс %@";
+"window.ready" = "готово";
+
+"error.notLoggedIn" = "Нет входа — откройте %@";
+"error.tokenExpired" = "Сессия истекла — откройте %@";
+"error.rateLimited" = "Слишком много запросов, попробуйте позже";
+"error.network" = "Ошибка сети";
+"error.badResponse" = "Неожиданный ответ";
+
+"settings.title" = "Настройки";
+"settings.refresh" = "Автообновление";
+"settings.refresh.off" = "Выкл (только при открытии)";
+"settings.refresh.every" = "Каждые %d мин";
+"settings.notifications" = "Уведомления";
+"settings.notifications.enabled" = "Уведомлять, когда лимит почти исчерпан";
+"settings.notifications.threshold" = "Порог";
+"settings.notifications.hint" = "При выключенном автообновлении проверка происходит только при открытии панели.";
+"settings.notifications.denied" = "Уведомления отключены в Системных настройках.";
+"settings.language" = "Язык";
+"settings.language.system" = "Системный";
+"settings.language.en" = "English";
+"settings.language.ru" = "Русский";
+"settings.providers" = "Провайдеры";
+"settings.launchAtLogin" = "Запускать при входе";
+
+"notification.title" = "%@: лимит «%@» на %@";
+"notification.body" = "Сброс через %@.";
+"notification.bodyNoReset" = "Стоит притормозить.";
