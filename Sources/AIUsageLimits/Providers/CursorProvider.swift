@@ -29,6 +29,13 @@ struct CursorProvider: UsageProvider {
         return try await HTTP.json(usageSummaryURL, headers: headers(creds))
     }
 
+    /// Start of the current billing cycle from `usage-summary` (used to bound the first stats fetch).
+    static func billingCycleStart() async -> Date? {
+        guard let data = try? await rawUsageSummary(),
+              let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else { return nil }
+        return Formatters.isoDate(json["billingCycleStart"] as? String)
+    }
+
     static func rawSandUsage() async throws -> Data {
         guard let creds = loadCredentials() else { throw ProviderError.notLoggedIn }
         return try await HTTP.json(sandUsageURL, method: "POST", headers: headers(creds), body: Data("{}".utf8))

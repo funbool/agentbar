@@ -2,6 +2,7 @@ import SwiftUI
 
 struct PanelView: View {
     @Environment(UsageStore.self) private var store
+    @Environment(StatsStore.self) private var stats
     @Environment(\.openWindow) private var openWindow
     @State private var now = Date()
 
@@ -21,7 +22,12 @@ struct PanelView: View {
                     snapshot: store.snapshots[provider],
                     error: store.errors[provider],
                     settings: store.settings,
-                    now: now)
+                    now: now,
+                    onStats: {
+                        stats.selectedProvider = provider
+                        openWindow(id: "stats")
+                        NSApp.activate(ignoringOtherApps: true)
+                    })
                 if provider != providers.last { Divider() }
             }
             Divider()

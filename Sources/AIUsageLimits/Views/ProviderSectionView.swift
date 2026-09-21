@@ -6,6 +6,7 @@ struct ProviderSectionView: View {
     let error: ProviderError?
     let settings: Settings
     let now: Date
+    var onStats: (() -> Void)? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -23,6 +24,12 @@ struct ProviderSectionView: View {
                         .foregroundStyle(.secondary)
                 }
                 Spacer()
+                if let onStats {
+                    Button(action: onStats) { Image(systemName: "chart.bar.xaxis") }
+                        .buttonStyle(.borderless)
+                        .foregroundStyle(.secondary)
+                        .help(L("panel.stats"))
+                }
             }
             if let error {
                 Label(errorText(error), systemImage: "exclamationmark.triangle")

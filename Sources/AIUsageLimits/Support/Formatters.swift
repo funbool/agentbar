@@ -5,6 +5,21 @@ enum Formatters {
         "\(Int(value.rounded()))%"
     }
 
+    /// 1234 -> "1.2K", 5_512_045_797 -> "5.51B".
+    static func compact(_ n: Int) -> String {
+        let v = Double(n)
+        switch v {
+        case 1_000_000_000...: return String(format: v >= 10_000_000_000 ? "%.1fB" : "%.2fB", v / 1e9)
+        case 1_000_000...: return String(format: v >= 10_000_000 ? "%.1fM" : "%.2fM", v / 1e6)
+        case 1_000...: return String(format: v >= 10_000 ? "%.0fK" : "%.1fK", v / 1e3)
+        default: return "\(n)"
+        }
+    }
+
+    static func usdPrecise(_ value: Double) -> String {
+        value >= 100 ? String(format: "$%.0f", value) : String(format: "$%.2f", value)
+    }
+
     static func usd(_ value: Double) -> String {
         let isWhole = value == value.rounded()
         return isWhole ? "$\(Int(value))" : String(format: "$%.2f", value)

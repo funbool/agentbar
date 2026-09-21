@@ -3,6 +3,7 @@ import SwiftUI
 @main
 struct AIUsageLimitsApp: App {
     @State private var store: UsageStore
+    @State private var stats = StatsStore()
     private let settings: Settings
     private let notifier: Notifier
 
@@ -26,6 +27,7 @@ struct AIUsageLimitsApp: App {
         MenuBarExtra("AI Usage Limits", systemImage: "gauge.with.dots.needle.33percent") {
             PanelView()
                 .environment(store)
+                .environment(stats)
                 .id(settings.language) // re-render all localized text when the language changes
         }
         .menuBarExtraStyle(.window)
@@ -36,6 +38,13 @@ struct AIUsageLimitsApp: App {
                 .id(settings.language)
         }
         .windowResizability(.contentSize)
+        .defaultPosition(.center)
+
+        Window(L("stats.title"), id: "stats") {
+            StatsView()
+                .environment(stats)
+                .id(settings.language)
+        }
         .defaultPosition(.center)
     }
 }

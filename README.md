@@ -35,6 +35,17 @@ The prompt can come back after Claude Code rotates its token; that's expected.
   (50–95 %), provider visibility, language (system / English / Русский), launch at login.
 - One notification per limit window per reset cycle.
 
+## Usage statistics
+
+The chart button next to each provider opens a statistics window (Today / 7 days / 30 days / All time):
+tokens by type, cost, per-model and per-project breakdown, daily cost chart.
+
+| Provider | Source | Cost |
+|---|---|---|
+| Claude | `~/.claude/projects/**/*.jsonl` transcripts, indexed once and cached per file in `~/Library/Application Support/AIUsageLimits/` | What the same usage would cost via the API: list prices, cache write ×1.25 (5 min) / ×2 (1 h), cache read ×0.1 |
+| Codex | `~/.codex/sessions/**/*.jsonl` rollouts (`token_count` deltas) | OpenAI API list prices, cached input ×0.1; models without a public price show tokens only |
+| Cursor | Dashboard usage events (`get-filtered-usage-events`), cached locally; first open asks whether to load all history or only the current billing cycle, later refreshes fetch only new events | As reported by Cursor per request |
+
 ## App icon
 
 The icon source is `Packaging/AppIcon.svg`; `scripts/make-icon.sh` renders it into `Packaging/AppIcon.icns`
@@ -46,6 +57,8 @@ The icon source is `Packaging/AppIcon.svg`; `scripts/make-icon.sh` renders it in
 swift test                                # parsers, JWT, formatters, notification logic
 swift build && .build/debug/AIUsageLimits --dump   # fetch all providers once and print the result
 .build/debug/AIUsageLimits --raw                   # print raw JSON of every endpoint
+.build/debug/AIUsageLimits --stats                 # index local Claude/Codex logs and print totals
+.build/debug/AIUsageLimits --cursor-events         # fetch Cursor usage events and print totals
 ```
 
 Tokens are never refreshed by this app; if a provider shows "session expired", open its client and it will refresh
