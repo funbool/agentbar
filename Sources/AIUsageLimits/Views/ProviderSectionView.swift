@@ -6,7 +6,6 @@ struct ProviderSectionView: View {
     let error: ProviderError?
     let settings: Settings
     let now: Date
-    var onStats: (() -> Void)? = nil
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -24,12 +23,6 @@ struct ProviderSectionView: View {
                         .foregroundStyle(.secondary)
                 }
                 Spacer()
-                if let onStats {
-                    Button(action: onStats) { Image(systemName: "chart.bar.xaxis") }
-                        .buttonStyle(.borderless)
-                        .foregroundStyle(.secondary)
-                        .help(L("panel.stats"))
-                }
             }
             if let error {
                 Label(errorText(error), systemImage: "exclamationmark.triangle")
@@ -38,7 +31,7 @@ struct ProviderSectionView: View {
             }
             if let snapshot {
                 ForEach(snapshot.windows) { window in
-                    WindowRowView(window: window, threshold: settings.effectiveThreshold(for: provider, window), now: now)
+                    WindowRowView(window: window, provider: provider, settings: settings, now: now)
                 }
             } else if error == nil {
                 Text(L("panel.never"))

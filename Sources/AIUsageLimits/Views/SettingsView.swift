@@ -7,8 +7,19 @@ struct SettingsView: View {
     let notifier: Notifier
 
     var body: some View {
+        TabView {
+            general.tabItem { Label(L("settings.tab.general"), systemImage: "gearshape") }
+            notifications.tabItem { Label(L("settings.tab.notifications"), systemImage: "bell") }
+        }
+        .frame(width: 560, height: 520)
+        .background(WindowAccessor { DockPresence.track($0) })
+        .navigationTitle(L("settings.title"))
+        .task { notificationsDenied = await notifier.authorizationDenied() }
+    }
+
+    private var general: some View {
         @Bindable var settings = store.settings
-        Form {
+        return Form {
             Section(L("settings.refresh")) {
                 Picker(L("settings.refresh"), selection: $settings.refreshInterval) {
                     ForEach(RefreshInterval.allCases) { interval in
@@ -17,35 +28,6 @@ struct SettingsView: View {
                 }
                 .labelsHidden()
                 .onChange(of: settings.refreshInterval) { store.applySchedule() }
-            }
-
-            Section(L("settings.notifications")) {
-                Toggle(L("settings.notifications.enabled"), isOn: $settings.notificationsEnabled)
-                    .onChange(of: settings.notificationsEnabled) { _, on in
-                        if on { notifier.requestAuthorization() }
-                        Task { notificationsDenied = await notifier.authorizationDenied() }
-                    }
-                Picker(L("settings.notifications.threshold"), selection: $settings.notificationThreshold) {
-                    ForEach(Settings.notificationThresholds, id: \.self) { Text("\($0)%").tag($0) }
-                }
-                .disabled(!settings.notificationsEnabled)
-                if notificationsDenied && settings.notificationsEnabled {
-                    Text(L("settings.notifications.denied")).font(.caption).foregroundStyle(.orange)
-                }
-                if settings.refreshInterval == .off && settings.notificationsEnabled {
-                    Text(L("settings.notifications.hint")).font(.caption).foregroundStyle(.secondary)
-                }
-            }
-
-            if settings.notificationsEnabled {
-                Section(L("settings.notifications.perLimit")) {
-                    ForEach(store.visibleProviders) { provider in
-                        Text(provider.displayName).font(.headline)
-                        ForEach(knownWindows(for: provider)) { window in
-                            ruleRow(provider: provider, window: window, settings: settings)
-                        }
-                    }
-                }
             }
 
             Section(L("settings.providers")) {
@@ -72,9 +54,41 @@ struct SettingsView: View {
             }
         }
         .formStyle(.grouped)
-        .frame(width: 380)
-        .navigationTitle(L("settings.title"))
-        .task { notificationsDenied = await notifier.authorizationDenied() }
+    }
+
+    private var notifications: some View {
+        @Bindable var settings = store.settings
+        return Form {
+            Section(L("settings.notifications")) {
+                Toggle(L("settings.notifications.enabled"), isOn: $settings.notificationsEnabled)
+                    .onChange(of: settings.notificationsEnabled) { _, on in
+                        if on { notifier.requestAuthorization() }
+                        Task { notificationsDenied = await notifier.authorizationDenied() }
+                    }
+                Picker(L("settings.notifications.threshold"), selection: $settings.notificationThreshold) {
+                    ForEach(Settings.notificationThresholds, id: \.self) { Text("\($0)%").tag($0) }
+                }
+                .disabled(!settings.notificationsEnabled)
+                if notificationsDenied && settings.notificationsEnabled {
+                    Text(L("settings.notifications.denied")).font(.caption).foregroundStyle(.orange)
+                }
+                if settings.refreshInterval == .off && settings.notificationsEnabled {
+                    Text(L("settings.notifications.hint")).font(.caption).foregroundStyle(.secondary)
+                }
+            }
+
+            Section(L("settings.notifications.perLimit")) {
+                Text(L("settings.notifications.perLimitHint")).font(.caption).foregroundStyle(.secondary)
+                ForEach(store.visibleProviders) { provider in
+                    Text(provider.displayName).font(.headline).padding(.top, 4)
+                    ForEach(knownWindows(for: provider)) { window in
+                        ruleRow(provider: provider, window: window, settings: settings)
+                    }
+                }
+            }
+            .disabled(!settings.notificationsEnabled)
+        }
+        .formStyle(.grouped)
     }
 
     /// Windows the user can configure: whatever the last fetch returned, plus the always-present ones

@@ -10,6 +10,8 @@ struct StatsView: View {
     @Environment(StatsStore.self) private var stats
     @State private var metric: ChartMetric = .cost
     @State private var hoveredDay: Date?
+    @State private var hoveredSegment: (model: String, stat: DayModelStat?, value: Double)?
+    @State private var hoverLocation: CGPoint = .zero
 
     var body: some View {
         @Bindable var stats = stats
@@ -132,9 +134,9 @@ struct StatsView: View {
         VStack(alignment: .leading, spacing: 4) {
             Text(title).font(.caption).foregroundStyle(.secondary).lineLimit(1)
             Text(value).font(.title3.weight(.semibold).monospacedDigit()).foregroundStyle(accent ? Color.accentColor : .primary)
-            if let subtitle {
-                Text(subtitle).font(.caption2).foregroundStyle(.tertiary).lineLimit(1).help(L("stats.tokens.lineCountedHelp"))
-            }
+            // Every tile reserves the subtitle line so the grid stays even.
+            Text(subtitle ?? " ").font(.caption2).foregroundStyle(.tertiary).lineLimit(1)
+                .help(subtitle == nil ? "" : L("stats.tokens.lineCountedHelp"))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(10)
@@ -219,16 +221,62 @@ struct StatsView: View {
                             switch phase {
                             case .active(let loc):
                                 guard let plot = proxy.plotFrame else { return }
-                                let x = loc.x - geo[plot].origin.x
-                                if let date: Date = proxy.value(atX: x) { hoveredDay = date } else { hoveredDay = nil }
+                                let frame = geo[plot]
+                                let x = loc.x - frame.origin.x
+                                let y = loc.y - frame.origin.y
+                                hoverLocation = loc
+                                guard let date: Date = proxy.value(atX: x), let yValue: Double = proxy.value(atY: y) else {
+                                    hoveredDay = nil; hoveredSegment = nil; return
+                                }
+                                hoveredDay = date
+                                hoveredSegment = segment(at: date, value: yValue, points: points, report: r)
                             case .ended:
                                 hoveredDay = nil
+                                hoveredSegment = nil
+                            }
+                        }
+                        .overlay(alignment: .topLeading) {
+                            if let seg = hoveredSegment {
+                                segmentPopup(seg)
+                                    .offset(x: min(hoverLocation.x + 12, geo.size.width - 200), y: max(hoverLocation.y - 70, 0))
+                                    .allowsHitTesting(false)
                             }
                         }
                 }
             }
             .frame(height: 200)
         }
+    }
+
+    /// Finds which stacked segment sits under the cursor: segments stack in the order the points were emitted.
+    private func segment(at date: Date, value: Double, points: [ChartPoint], report: StatsReport) -> (model: String, stat: DayModelStat?, value: Double)? {
+        let cal = Calendar.current
+        let dayPoints = points.filter { cal.isDate($0.day, inSameDayAs: date) }
+        var bottom = 0.0
+        for p in dayPoints {
+            let top = bottom + p.value
+            if value >= bottom && value <= top {
+                let stat = report.byDay.first { cal.isDate($0.day, inSameDayAs: date) }?.byModel.first { $0.model == p.model }
+                return (p.model, stat, p.value)
+            }
+            bottom = top
+        }
+        return nil
+    }
+
+    private func segmentPopup(_ seg: (model: String, stat: DayModelStat?, value: Double)) -> some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text(seg.model).font(.caption.weight(.semibold)).lineLimit(1)
+            if let st = seg.stat {
+                Text("\(Formatters.usdPrecise(st.costUSD)) · \(Formatters.compact(st.tokens)) \(L("stats.metric.tokens").lowercased()) · \(st.calls) \(L("stats.metric.calls").lowercased())")
+                    .font(.caption2.monospacedDigit()).foregroundStyle(.secondary)
+            } else {
+                Text(axisLabel(seg.value)).font(.caption2.monospacedDigit()).foregroundStyle(.secondary)
+            }
+        }
+        .padding(8)
+        .background(RoundedRectangle(cornerRadius: 6).fill(.regularMaterial).shadow(radius: 4))
+        .frame(maxWidth: 260, alignment: .leading)
     }
 
     private func modelTable(_ r: StatsReport) -> some View {

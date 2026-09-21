@@ -23,11 +23,7 @@ struct PanelView: View {
                     snapshot: store.snapshots[provider],
                     error: store.errors[provider],
                     settings: store.settings,
-                    now: now,
-                    onStats: {
-                        stats.selectedProvider = provider
-                        open("stats")
-                    })
+                    now: now)
                 if provider != providers.last { Divider() }
             }
             Divider()
@@ -65,6 +61,13 @@ struct PanelView: View {
             }
             .help(L("panel.refresh"))
             .disabled(store.isRefreshing)
+            Button {
+                if let first = store.visibleProviders.first { stats.selectedProvider = first }
+                open("stats")
+            } label: {
+                Image(systemName: "chart.bar.xaxis")
+            }
+            .help(L("panel.stats"))
             Button {
                 open("settings")
             } label: {

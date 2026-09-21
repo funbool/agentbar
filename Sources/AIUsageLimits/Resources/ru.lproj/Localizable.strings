@@ -87,3 +87,9 @@
 "stats.metric.tokens" = "Токены";
 "stats.metric.calls" = "Запросы";
 "stats.otherModels" = "прочие";
+"settings.tab.general" = "Основные";
+"settings.tab.notifications" = "Уведомления";
+"settings.notifications.perLimitHint" = "Отключите лимит или задайте ему свой порог. Колокольчик рядом с лимитом в панели открывает те же настройки.";
+"panel.rule.help" = "Уведомление для этого лимита";
+"panel.rule.notifyThis" = "Уведомлять по этому лимиту";
+"panel.rule.current" = "Сейчас %@, уведомление при %d%%.";
