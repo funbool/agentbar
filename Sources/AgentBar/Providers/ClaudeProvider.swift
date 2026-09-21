@@ -5,6 +5,7 @@ struct ClaudeProvider: UsageProvider {
 
     static let keychainService = "Claude Code-credentials"
     static let usageURL = URL(string: "https://api.anthropic.com/api/oauth/usage")!
+    static let profileURL = URL(string: "https://api.anthropic.com/api/oauth/profile")!
     private static let betaHeader = "oauth-2025-04-20"
 
     struct Credentials: Equatable {
@@ -14,12 +15,60 @@ struct ClaudeProvider: UsageProvider {
 
     func fetch() async throws -> ProviderSnapshot {
         guard let creds = Self.loadCredentials() else { throw ProviderError.notLoggedIn }
-        return try Self.parse(try await Self.rawUsage(creds), plan: creds.subscriptionType)
+        let usage = try await Self.rawUsage(creds)
+        // The Keychain's `subscriptionType` is written at login and goes stale after a plan change;
+        // the profile endpoint is authoritative, so prefer it (cached for an hour).
+        let plan = await Self.cachedPlan(creds) ?? creds.subscriptionType.map(Self.planLabel)
+        return try Self.parse(usage, plan: plan)
+    }
+
+    // MARK: - Plan
+
+    private static let planCache = PlanCache()
+
+    private static func cachedPlan(_ creds: Credentials) async -> String? {
+        if let cached = await planCache.value(for: creds.accessToken) { return cached }
+        guard let data = try? await rawProfile(creds), let plan = parsePlan(data) else { return nil }
+        await planCache.store(plan, for: creds.accessToken)
+        return plan
+    }
+
+    /// "Max 20x" / "Max 5x" / "Max" / "Pro" / "Team" / "Enterprise" from `/api/oauth/profile`.
+    static func parsePlan(_ data: Data) -> String? {
+        guard let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else { return nil }
+        let org = json["organization"] as? [String: Any] ?? [:]
+        let account = json["account"] as? [String: Any] ?? [:]
+        if let tier = org["rate_limit_tier"] as? String {
+            // e.g. default_claude_max_20x -> "Max 20x"
+            if let range = tier.range(of: "claude_max_") {
+                let multiplier = tier[range.upperBound...]
+                return multiplier.isEmpty ? "Max" : "Max \(multiplier)"
+            }
+        }
+        switch org["organization_type"] as? String {
+        case "claude_max": return "Max"
+        case "claude_pro": return "Pro"
+        case "claude_team": return "Team"
+        case "claude_enterprise": return "Enterprise"
+        default: break
+        }
+        if account["has_claude_max"] as? Bool == true { return "Max" }
+        if account["has_claude_pro"] as? Bool == true { return "Pro" }
+        return nil
     }
 
     static func rawUsage(_ creds: Credentials? = nil) async throws -> Data {
         guard let creds = creds ?? loadCredentials() else { throw ProviderError.notLoggedIn }
         return try await HTTP.json(usageURL, headers: [
+            "Authorization": "Bearer \(creds.accessToken)",
+            "anthropic-beta": betaHeader,
+            "User-Agent": "claude-code/\(claudeCodeVersion())",
+        ])
+    }
+
+    static func rawProfile(_ creds: Credentials? = nil) async throws -> Data {
+        guard let creds = creds ?? loadCredentials() else { throw ProviderError.notLoggedIn }
+        return try await HTTP.json(profileURL, headers: [
             "Authorization": "Bearer \(creds.accessToken)",
             "anthropic-beta": betaHeader,
             "User-Agent": "claude-code/\(claudeCodeVersion())",
@@ -59,6 +108,10 @@ struct ClaudeProvider: UsageProvider {
     // MARK: - Parsing
 
     static func parse(_ data: Data, plan: String?) throws -> ProviderSnapshot {
+        try parseUsage(data, plan: plan)
+    }
+
+    private static func parseUsage(_ data: Data, plan: String?) throws -> ProviderSnapshot {
         guard let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any] else {
             throw ProviderError.badResponse("Claude usage: not a JSON object")
         }
@@ -75,7 +128,7 @@ struct ClaudeProvider: UsageProvider {
         add("seven_day_sonnet", .weeklySonnet)
         windows += scopedWeeklyWindows(json["limits"] as? [[String: Any]], existing: windows)
         guard !windows.isEmpty else { throw ProviderError.badResponse("Claude usage: no windows in response") }
-        return ProviderSnapshot(provider: .claude, windows: windows, plan: plan.map(Self.planLabel))
+        return ProviderSnapshot(provider: .claude, windows: windows, plan: plan)
     }
 
     /// Newer response shape: `limits[]` entries with `kind == "weekly_scoped"` name the model they apply to
@@ -104,7 +157,25 @@ struct ClaudeProvider: UsageProvider {
         }
     }
 
-    private static func planLabel(_ raw: String) -> String {
+    static func planLabel(_ raw: String) -> String {
         raw.prefix(1).uppercased() + raw.dropFirst()
+    }
+}
+
+/// One-hour cache of the plan label keyed by access token (a new token means a possible account change).
+actor PlanCache {
+    private var token: String?
+    private var plan: String?
+    private var fetchedAt: Date?
+
+    func value(for token: String) -> String? {
+        guard self.token == token, let plan, let fetchedAt, Date().timeIntervalSince(fetchedAt) < 3600 else { return nil }
+        return plan
+    }
+
+    func store(_ plan: String, for token: String) {
+        self.token = token
+        self.plan = plan
+        self.fetchedAt = Date()
     }
 }

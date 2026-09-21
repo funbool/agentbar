@@ -100,6 +100,14 @@ enum DebugDump {
                 print("--- \(label) ERROR: \(error)")
             }
         }
+        await show("claude keychain (non-secret fields)") {
+            guard let raw = KeychainReader.genericPassword(service: ClaudeProvider.keychainService),
+                  let json = try JSONSerialization.jsonObject(with: Data(raw.utf8)) as? [String: Any],
+                  let oauth = json["claudeAiOauth"] as? [String: Any] else { throw ProviderError.notLoggedIn }
+            let safe = oauth.filter { !["accessToken", "refreshToken"].contains($0.key) }
+            return try JSONSerialization.data(withJSONObject: safe)
+        }
+        await show("claude profile") { try await ClaudeProvider.rawProfile() }
         await show("claude") { try await ClaudeProvider.rawUsage() }
         await show("codex") { try await CodexProvider.rawUsage() }
         await show("cursor usage-summary") { try await CursorProvider.rawUsageSummary() }

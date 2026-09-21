@@ -8,7 +8,7 @@ private func fixture(_ name: String) throws -> Data {
 
 final class ClaudeProviderTests: XCTestCase {
     func testParsesWindows() throws {
-        let snap = try ClaudeProvider.parse(try fixture("claude_usage"), plan: "max")
+        let snap = try ClaudeProvider.parse(try fixture("claude_usage"), plan: ClaudeProvider.planLabel("max"))
         XCTAssertEqual(snap.provider, .claude)
         XCTAssertEqual(snap.plan, "Max")
         XCTAssertEqual(snap.windows.map(\.kind), [.fiveHour, .weekly, .weeklyOpus, .weeklyScoped])
@@ -29,6 +29,18 @@ final class ClaudeProviderTests: XCTestCase {
 
     func testEmptyResponseThrows() {
         XCTAssertThrowsError(try ClaudeProvider.parse(Data("{}".utf8), plan: nil))
+    }
+
+    func testPlanFromProfilePrefersRateLimitTier() {
+        let max20 = #"{"account":{"has_claude_max":true,"has_claude_pro":false},"organization":{"organization_type":"claude_max","rate_limit_tier":"default_claude_max_20x"}}"#
+        XCTAssertEqual(ClaudeProvider.parsePlan(Data(max20.utf8)), "Max 20x")
+        let max5 = #"{"organization":{"rate_limit_tier":"default_claude_max_5x"}}"#
+        XCTAssertEqual(ClaudeProvider.parsePlan(Data(max5.utf8)), "Max 5x")
+        let pro = #"{"account":{"has_claude_max":false,"has_claude_pro":true},"organization":{"organization_type":"claude_pro","rate_limit_tier":"default_claude_ai"}}"#
+        XCTAssertEqual(ClaudeProvider.parsePlan(Data(pro.utf8)), "Pro")
+        let team = #"{"organization":{"organization_type":"claude_team"}}"#
+        XCTAssertEqual(ClaudeProvider.parsePlan(Data(team.utf8)), "Team")
+        XCTAssertNil(ClaudeProvider.parsePlan(Data("{}".utf8)))
     }
 }
 
