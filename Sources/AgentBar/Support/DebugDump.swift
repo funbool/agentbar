@@ -7,8 +7,24 @@ enum DebugDump {
 
     static func runIfRequested() {
         let args = CommandLine.arguments
-        guard args.contains("--dump") || args.contains("--raw") || args.contains("--stats") || args.contains("--cursor-events") else { return }
+        guard args.contains("--dump") || args.contains("--raw") || args.contains("--stats") || args.contains("--cursor-events") || args.contains("--update") else { return }
         if args.contains("--stats") { dumpStats(); exit(0) }
+        if args.contains("--update") {
+            // Headless end-to-end update: check → download → verify → swap → relaunch.
+            let sem = DispatchSemaphore(value: 0)
+            Task { @MainActor in
+                let updater = Updater()
+                print("current \(updater.currentVersion)")
+                await updater.check()
+                if case .failed(let m) = updater.phase { print("check failed: \(m)") }
+                guard let rel = updater.available else { print("no update available"); sem.signal(); return }
+                print("available \(rel.version) \(rel.zipURL)")
+                await updater.installAvailable()
+                if case .failed(let m) = updater.phase { print("install failed: \(m)") }
+                sem.signal()
+            }
+            sem.wait(); exit(0)
+        }
         if args.contains("--cursor-events") {
             let sem = DispatchSemaphore(value: 0)
             Task {
