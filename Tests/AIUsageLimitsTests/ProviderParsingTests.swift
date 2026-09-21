@@ -61,16 +61,16 @@ final class CursorProviderTests: XCTestCase {
     func testParsesPlanAndOnDemand() throws {
         let snap = try CursorProvider.parse(try fixture("cursor_usage_summary"), sand: try fixture("cursor_sand_usage"))
         XCTAssertEqual(snap.plan, "Pro")
-        XCTAssertEqual(snap.windows.map(\.kind), [.monthly, .autoComposer, .apiModels, .onDemand, .grok])
-        XCTAssertEqual(snap.windows[0].usedPercent, 61.7)
-        XCTAssertEqual(snap.windows[0].detail, "$12.34 / $20")
+        XCTAssertEqual(snap.windows.map(\.kind), [.cursorModels, .apiModels, .onDemand, .grok])
+        XCTAssertEqual(snap.summary, "$12.34 spent")
+        XCTAssertEqual(snap.windows[0].usedPercent, 20.1)
         XCTAssertEqual(snap.windows[0].resetsAt, Formatters.isoDate("2026-10-01T00:00:00Z"))
-        XCTAssertEqual(snap.windows[1].usedPercent, 20.1)
-        XCTAssertEqual(snap.windows[2].usedPercent, 41.6)
-        XCTAssertEqual(snap.windows[3].usedPercent, 7, accuracy: 0.001)
-        XCTAssertEqual(snap.windows[4].usedPercent, 12.5)
+        XCTAssertEqual(snap.windows[1].usedPercent, 41.6)
+        XCTAssertEqual(snap.windows[2].usedPercent, 7, accuracy: 0.001)
+        XCTAssertEqual(snap.windows[2].detail, "$3.50 / $50")
+        XCTAssertEqual(snap.windows[3].usedPercent, 12.5)
         // No nextResetTimestampUtc → period start + 7 days.
-        XCTAssertEqual(snap.windows[4].resetsAt, Formatters.isoDate("2026-09-24T00:00:00Z"))
+        XCTAssertEqual(snap.windows[3].resetsAt, Formatters.isoDate("2026-09-24T00:00:00Z"))
     }
 
     func testGrokSkippedWithoutIncludedLimit() {
@@ -79,10 +79,10 @@ final class CursorProviderTests: XCTestCase {
     }
 
     func testOnDemandSkippedWhenDisabled() throws {
-        let json = #"{"individualUsage":{"plan":{"used":100,"limit":1000},"onDemand":{"enabled":false}}}"#
+        let json = #"{"individualUsage":{"plan":{"used":100,"limit":1000,"autoPercentUsed":3,"apiPercentUsed":4},"onDemand":{"enabled":false}}}"#
         let snap = try CursorProvider.parse(Data(json.utf8))
-        XCTAssertEqual(snap.windows.map(\.kind), [.monthly])
-        XCTAssertEqual(snap.windows[0].usedPercent, 10)
+        XCTAssertEqual(snap.windows.map(\.kind), [.cursorModels, .apiModels])
+        XCTAssertEqual(snap.windows[0].usedPercent, 3)
     }
 
     func testCredentialsFromJWT() throws {

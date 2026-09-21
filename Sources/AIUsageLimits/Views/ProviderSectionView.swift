@@ -17,6 +17,11 @@ struct ProviderSectionView: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 }
+                if let summary = snapshot?.summary {
+                    Text("· " + summary)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
                 Spacer()
             }
             if let error {

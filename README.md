@@ -8,7 +8,7 @@ same usage endpoints they do.
 |---|---|---|
 | Claude | 5-hour, weekly, per-model weekly limits (Opus / Sonnet / Fable …) when reported | Keychain item `Claude Code-credentials` |
 | Codex | 5-hour, weekly | `~/.codex/auth.json` (or `$CODEX_HOME/auth.json`) |
-| Cursor | Monthly plan ($ used / limit), Auto + Composer, API models, on-demand, Grok Bot weekly | `~/Library/Application Support/Cursor/User/globalStorage/state.vscdb` |
+| Cursor | Included pools as Cursor counts them: Cursor models (Auto / Composer / Grok) and third-party API models; on-demand; Grok Bot weekly; $ spent in the header | `~/Library/Application Support/Cursor/User/globalStorage/state.vscdb` |
 
 ## Build & install
 

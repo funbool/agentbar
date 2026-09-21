@@ -10,10 +10,10 @@
 "window.weekly" = "Неделя";
 "window.weeklyOpus" = "Неделя · Opus";
 "window.weeklySonnet" = "Неделя · Sonnet";
-"window.monthly" = "Месячный план";
 "window.weeklyScoped" = "Неделя · %@";
-"window.autoComposer" = "Auto + Composer";
-"window.apiModels" = "API-модели";
+"window.cursorModels" = "Модели Cursor · Auto / Composer / Grok";
+"window.apiModels" = "Сторонние модели · API";
+"cursor.spent" = "потрачено %@";
 "window.grok" = "Grok Bot · неделя";
 "window.onDemand" = "Сверх плана";
 "window.resetsIn" = "сброс через %@";

@@ -10,10 +10,10 @@
 "window.weekly" = "Weekly";
 "window.weeklyOpus" = "Weekly · Opus";
 "window.weeklySonnet" = "Weekly · Sonnet";
-"window.monthly" = "Monthly plan";
 "window.weeklyScoped" = "Weekly · %@";
-"window.autoComposer" = "Auto + Composer";
-"window.apiModels" = "API models";
+"window.cursorModels" = "Cursor models · Auto / Composer / Grok";
+"window.apiModels" = "Other models · API";
+"cursor.spent" = "%@ spent";
 "window.grok" = "Grok Bot · weekly";
 "window.onDemand" = "On-demand";
 "window.resetsIn" = "resets in %@";

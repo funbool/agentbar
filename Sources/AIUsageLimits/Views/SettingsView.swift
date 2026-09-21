@@ -82,7 +82,7 @@ struct SettingsView: View {
     private func knownWindows(for provider: Provider) -> [UsageWindow] {
         let staticKinds: [UsageWindow.Kind] = switch provider {
         case .claude, .codex: [.fiveHour, .weekly]
-        case .cursor: [.monthly, .autoComposer, .apiModels, .onDemand, .grok]
+        case .cursor: [.cursorModels, .apiModels, .onDemand, .grok]
         }
         var windows = store.snapshots[provider]?.windows ?? []
         for kind in staticKinds where !windows.contains(where: { $0.kind == kind }) {

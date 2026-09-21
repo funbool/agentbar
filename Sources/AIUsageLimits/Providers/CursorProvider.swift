@@ -65,23 +65,19 @@ struct CursorProvider: UsageProvider {
         let cycleEnd = Formatters.isoDate(json["billingCycleEnd"] as? String)
         var windows: [UsageWindow] = []
 
+        // Cursor tracks two included pools (its own models vs third-party API models) and reports each as a
+        // percentage. `used`/`limit` are the API-price equivalents and do not map onto those percentages,
+        // so the money is shown as a header summary rather than as a bar.
+        var summary: String?
         if let plan = individual["plan"] as? [String: Any] {
-            let usedCents = (plan["used"] as? NSNumber)?.doubleValue ?? 0
-            let limitCents = (plan["limit"] as? NSNumber)?.doubleValue ?? 0
-            let pct: Double? = (plan["totalPercentUsed"] as? NSNumber)?.doubleValue
-                ?? (limitCents > 0 ? usedCents / limitCents * 100 : nil)
-            if let pct {
-                let detail = limitCents > 0
-                    ? "\(Formatters.usd(usedCents / 100)) / \(Formatters.usd(limitCents / 100))"
-                    : nil
-                windows.append(UsageWindow(kind: .monthly, usedPercent: pct, resetsAt: cycleEnd, detail: detail))
-            }
-            // Percent fields are already in percent units (0.5 == 0.5%).
             if let auto = (plan["autoPercentUsed"] as? NSNumber)?.doubleValue {
-                windows.append(UsageWindow(kind: .autoComposer, usedPercent: auto, resetsAt: cycleEnd))
+                windows.append(UsageWindow(kind: .cursorModels, usedPercent: auto, resetsAt: cycleEnd))
             }
             if let api = (plan["apiPercentUsed"] as? NSNumber)?.doubleValue {
                 windows.append(UsageWindow(kind: .apiModels, usedPercent: api, resetsAt: cycleEnd))
+            }
+            if let usedCents = (plan["used"] as? NSNumber)?.doubleValue, usedCents > 0 {
+                summary = String(format: L("cursor.spent"), Formatters.usd(usedCents / 100))
             }
         }
         if let onDemand = individual["onDemand"] as? [String: Any],
@@ -98,7 +94,7 @@ struct CursorProvider: UsageProvider {
         if let sand, let grok = grokWindow(sand) { windows.append(grok) }
         guard !windows.isEmpty else { throw ProviderError.badResponse("Cursor usage: no plan data in response") }
         let plan = (json["membershipType"] as? String).map { $0.prefix(1).uppercased() + $0.dropFirst() }
-        return ProviderSnapshot(provider: .cursor, windows: windows, plan: plan)
+        return ProviderSnapshot(provider: .cursor, windows: windows, plan: plan, summary: summary)
     }
 
     /// `get-sand-usage-status`: Grok Bot weekly included usage. Nil when the account has no Bot allowance.

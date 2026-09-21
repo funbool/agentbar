@@ -23,17 +23,18 @@ enum Provider: String, CaseIterable, Codable, Identifiable, Sendable {
     }
 }
 
-/// One rate-limit window (e.g. Claude 5h, Codex weekly, Cursor monthly plan).
+/// One rate-limit window (e.g. Claude 5h, Codex weekly, a Cursor included pool).
 struct UsageWindow: Equatable, Identifiable, Sendable {
     enum Kind: String, Sendable {
         case fiveHour, weekly, weeklyOpus, weeklySonnet
         /// Weekly window scoped to one model (e.g. "Fable"); `label` carries the model name.
         case weeklyScoped
-        case monthly, onDemand
-        /// Cursor: Auto + Composer share of the included plan.
-        case autoComposer
-        /// Cursor: named (API) models share of the included plan.
+        /// Cursor: included pool for Cursor's own models (Auto / Composer / Grok).
+        case cursorModels
+        /// Cursor: included pool for third-party (API) models.
         case apiModels
+        /// Cursor: on-demand spending on top of the plan.
+        case onDemand
         /// Cursor: Grok Bot weekly included usage.
         case grok
     }
@@ -76,12 +77,15 @@ struct ProviderSnapshot: Equatable, Sendable {
     let provider: Provider
     let windows: [UsageWindow]
     let plan: String?
+    /// Secondary header text, e.g. money spent this cycle.
+    let summary: String?
     let fetchedAt: Date
 
-    init(provider: Provider, windows: [UsageWindow], plan: String? = nil, fetchedAt: Date = Date()) {
+    init(provider: Provider, windows: [UsageWindow], plan: String? = nil, summary: String? = nil, fetchedAt: Date = Date()) {
         self.provider = provider
         self.windows = windows
         self.plan = plan
+        self.summary = summary
         self.fetchedAt = fetchedAt
     }
 }
