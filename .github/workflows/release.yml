@@ -1,0 +1,30 @@
+name: Release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test
+        run: swift test
+      - name: Build app bundle
+        env:
+          TAG: ${{ github.ref_name }}
+          BUILD_NUMBER: ${{ github.run_number }}
+        run: VERSION="${TAG#v}" ./scripts/build.sh
+      - name: Package
+        run: |
+          cd build
+          ditto -c -k --keepParent AgentBar.app AgentBar.zip
+          shasum -a 256 AgentBar.zip > AgentBar.zip.sha256
+          cat AgentBar.zip.sha256
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ github.ref_name }}" build/AgentBar.zip build/AgentBar.zip.sha256 \
+            --title "AgentBar ${{ github.ref_name }}" --generate-notes

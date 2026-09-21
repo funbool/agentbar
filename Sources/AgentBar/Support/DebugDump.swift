@@ -1,6 +1,6 @@
 import Foundation
 
-/// `AIUsageLimits --dump` fetches every provider once, prints the result and exits.
+/// `AgentBar --dump` fetches every provider once, prints the result and exits.
 /// Handy for verifying endpoints without touching the UI.
 enum DebugDump {
     static let allProviders: [any UsageProvider] = [ClaudeProvider(), CodexProvider(), CursorProvider()]

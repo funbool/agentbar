@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @Environment(UsageStore.self) private var store
+    @Environment(Updater.self) private var updater
     @State private var launchAtLogin = LaunchAtLogin.isEnabled
     @State private var notificationsDenied = false
     let notifier: Notifier
@@ -52,8 +53,43 @@ struct SettingsView: View {
                         launchAtLogin = LaunchAtLogin.isEnabled
                     }
             }
+
+            Section(L("settings.updates")) {
+                updatesSection
+            }
         }
         .formStyle(.grouped)
+    }
+
+    private var updatesSection: some View {
+        @Bindable var updater = updater
+        return Group {
+            HStack {
+                Text(String(format: L("settings.updates.version"), updater.currentVersion))
+                Spacer()
+                if updater.phase == .checking {
+                    ProgressView().controlSize(.small)
+                } else {
+                    Button(L("settings.updates.check")) { Task { await updater.check() } }
+                        .disabled(updater.phase.isBusy)
+                }
+            }
+            Toggle(L("settings.updates.auto"), isOn: $updater.automaticChecks)
+            if let rel = updater.available {
+                HStack {
+                    Text(String(format: L("update.available"), rel.version)).foregroundStyle(Color.accentColor)
+                    Spacer()
+                    Button(L("update.install")) { Task { await updater.installAvailable() } }
+                        .buttonStyle(.borderedProminent).controlSize(.small).disabled(updater.phase.isBusy)
+                }
+            } else if let last = updater.lastCheck, updater.phase == .idle {
+                Text(String(format: L("settings.updates.upToDate"), Formatters.dateTime(last, locale: L10n.locale)))
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+            if case .failed(let msg) = updater.phase {
+                Text(msg).font(.caption).foregroundStyle(.orange)
+            }
+        }
     }
 
     private var notifications: some View {

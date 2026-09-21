@@ -11,8 +11,13 @@ struct FileScanCache: Codable {
 
     static var directory: URL {
         let base = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-        let dir = base.appendingPathComponent("AIUsageLimits", isDirectory: true)
-        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        let dir = base.appendingPathComponent("AgentBar", isDirectory: true)
+        let legacy = base.appendingPathComponent("AIUsageLimits", isDirectory: true)
+        let fm = FileManager.default
+        if !fm.fileExists(atPath: dir.path), fm.fileExists(atPath: legacy.path) {
+            try? fm.moveItem(at: legacy, to: dir) // keep indexes built under the old app name
+        }
+        try? fm.createDirectory(at: dir, withIntermediateDirectories: true)
         return dir
     }
 

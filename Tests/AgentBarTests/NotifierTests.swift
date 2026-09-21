@@ -1,5 +1,5 @@
 import XCTest
-@testable import AIUsageLimits
+@testable import AgentBar
 
 final class NotifierLogicTests: XCTestCase {
     private func snap(_ p: Provider, _ windows: [UsageWindow]) -> ProviderSnapshot {

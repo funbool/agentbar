@@ -16,7 +16,7 @@ struct CodexProvider: UsageProvider {
 
     static func rawUsage() async throws -> Data {
         guard let creds = loadCredentials() else { throw ProviderError.notLoggedIn }
-        var headers = ["Authorization": "Bearer \(creds.accessToken)", "User-Agent": "AIUsageLimits"]
+        var headers = ["Authorization": "Bearer \(creds.accessToken)", "User-Agent": "AgentBar"]
         if let accountId = creds.accountId { headers["ChatGPT-Account-Id"] = accountId }
         return try await HTTP.json(usageURL, headers: headers)
     }

@@ -1,4 +1,4 @@
-# AI Usage Limits
+# AgentBar
 
 Lightweight macOS menu bar app showing the current usage limits of **Claude Code**, **Codex** and **Cursor**.
 No login of its own: it reads the tokens the official clients already store on this Mac and calls the
@@ -10,7 +10,14 @@ same usage endpoints they do.
 | Codex | 5-hour, weekly | `~/.codex/auth.json` (or `$CODEX_HOME/auth.json`) |
 | Cursor | Included pools as Cursor counts them: Cursor models (Auto / Composer / Grok) and third-party API models; on-demand; Grok Bot weekly; $ spent in the header | `~/Library/Application Support/Cursor/User/globalStorage/state.vscdb` |
 
-## Build & install
+## Install
+
+Download `AgentBar.zip` from the [latest release](https://github.com/funbool/agentbar/releases/latest), unzip and move
+`AgentBar.app` to `/Applications`. The app checks GitHub Releases once a day (and on demand from Settings → Updates);
+when a newer version exists the panel shows an **Update** button that downloads the zip, verifies its SHA-256,
+swaps the bundle and relaunches.
+
+## Build from source
 
 Requires Xcode 15+ command line tools (Swift 5.9, macOS 14+). No third-party dependencies.
 
@@ -21,7 +28,7 @@ Requires Xcode 15+ command line tools (Swift 5.9, macOS 14+). No third-party dep
 Or just build:
 
 ```bash
-./scripts/build.sh     # -> build/AI Usage Limits.app
+./scripts/build.sh     # -> build/AgentBar.app
 ```
 
 On the first fetch macOS asks whether `security` may read the Claude Code Keychain item — choose **Always Allow**.
@@ -42,7 +49,7 @@ tokens by type, cost, per-model and per-project breakdown, daily cost chart.
 
 | Provider | Source | Cost |
 |---|---|---|
-| Claude | `~/.claude/projects/**/*.jsonl` transcripts, indexed once and cached per file in `~/Library/Application Support/AIUsageLimits/` | What the same usage would cost via the API: list prices, cache write ×1.25 (5 min) / ×2 (1 h), cache read ×0.1 |
+| Claude | `~/.claude/projects/**/*.jsonl` transcripts, indexed once and cached per file in `~/Library/Application Support/AgentBar/` | What the same usage would cost via the API: list prices, cache write ×1.25 (5 min) / ×2 (1 h), cache read ×0.1 |
 | Codex | `~/.codex/sessions/**/*.jsonl` rollouts (`token_count` deltas) | OpenAI API list prices, cached input ×0.1; models without a public price show tokens only |
 | Cursor | Dashboard usage events (`get-filtered-usage-events`), cached locally; first open asks whether to load all history or only the current billing cycle, later refreshes fetch only new events | As reported by Cursor per request |
 
@@ -51,14 +58,20 @@ tokens by type, cost, per-model and per-project breakdown, daily cost chart.
 The icon source is `Packaging/AppIcon.svg`; `scripts/make-icon.sh` renders it into `Packaging/AppIcon.icns`
 (all sizes 16–1024 incl. @2x), which `build.sh` copies into the bundle.
 
+## Releasing
+
+```bash
+./scripts/release.sh 0.2.0   # bumps Info.plist, tags v0.2.0, pushes; CI builds AgentBar.zip + sha256 and publishes the release
+```
+
 ## Development
 
 ```bash
 swift test                                # parsers, JWT, formatters, notification logic
-swift build && .build/debug/AIUsageLimits --dump   # fetch all providers once and print the result
-.build/debug/AIUsageLimits --raw                   # print raw JSON of every endpoint
-.build/debug/AIUsageLimits --stats                 # index local Claude/Codex logs and print totals
-.build/debug/AIUsageLimits --cursor-events         # fetch Cursor usage events and print totals
+swift build && .build/debug/AgentBar --dump   # fetch all providers once and print the result
+.build/debug/AgentBar --raw                   # print raw JSON of every endpoint
+.build/debug/AgentBar --stats                 # index local Claude/Codex logs and print totals
+.build/debug/AgentBar --cursor-events         # fetch Cursor usage events and print totals
 ```
 
 Tokens are never refreshed by this app; if a provider shows "session expired", open its client and it will refresh

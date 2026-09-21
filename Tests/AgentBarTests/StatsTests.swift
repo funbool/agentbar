@@ -1,5 +1,5 @@
 import XCTest
-@testable import AIUsageLimits
+@testable import AgentBar
 
 final class ClaudeStatsParserTests: XCTestCase {
     private let lines = """

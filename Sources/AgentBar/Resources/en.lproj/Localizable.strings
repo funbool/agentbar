@@ -1,4 +1,4 @@
-"app.name" = "AI Usage Limits";
+"app.name" = "AgentBar";
 "panel.refresh" = "Refresh";
 "panel.settings" = "Settings…";
 "panel.quit" = "Quit";
@@ -93,3 +93,16 @@
 "panel.rule.help" = "Notification for this limit";
 "panel.rule.notifyThis" = "Notify for this limit";
 "panel.rule.current" = "Now %@, notifies at %d%%.";
+"settings.updates" = "Updates";
+"settings.updates.version" = "AgentBar %@";
+"settings.updates.check" = "Check for updates";
+"settings.updates.auto" = "Check automatically (daily)";
+"settings.updates.upToDate" = "Up to date · checked %@";
+"update.available" = "Update to %@ available";
+"update.install" = "Update";
+"update.installing" = "Installing…";
+"update.notes" = "What's new";
+"update.error.noAsset" = "Release has no AgentBar.zip asset.";
+"update.error.badArchive" = "Downloaded archive is invalid.";
+"update.error.checksum" = "Checksum mismatch — download discarded.";
+"update.error.install" = "Could not install: %@";

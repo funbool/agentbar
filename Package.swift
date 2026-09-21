@@ -2,20 +2,20 @@
 import PackageDescription
 
 let package = Package(
-    name: "AIUsageLimits",
+    name: "AgentBar",
     defaultLocalization: "en",
     platforms: [.macOS(.v14)],
     targets: [
         .executableTarget(
-            name: "AIUsageLimits",
-            path: "Sources/AIUsageLimits",
+            name: "AgentBar",
+            path: "Sources/AgentBar",
             resources: [.process("Resources")],
             linkerSettings: [.linkedLibrary("sqlite3")]
         ),
         .testTarget(
-            name: "AIUsageLimitsTests",
-            dependencies: ["AIUsageLimits"],
-            path: "Tests/AIUsageLimitsTests",
+            name: "AgentBarTests",
+            dependencies: ["AgentBar"],
+            path: "Tests/AgentBarTests",
             resources: [.copy("Fixtures")]
         ),
     ]

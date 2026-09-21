@@ -1,5 +1,5 @@
 import XCTest
-@testable import AIUsageLimits
+@testable import AgentBar
 
 private func fixture(_ name: String) throws -> Data {
     let url = try XCTUnwrap(Bundle.module.url(forResource: name, withExtension: "json", subdirectory: "Fixtures"))

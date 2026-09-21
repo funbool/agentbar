@@ -1,4 +1,4 @@
-"app.name" = "Лимиты AI";
+"app.name" = "AgentBar";
 "panel.refresh" = "Обновить";
 "panel.settings" = "Настройки…";
 "panel.quit" = "Выйти";
@@ -93,3 +93,16 @@
 "panel.rule.help" = "Уведомление для этого лимита";
 "panel.rule.notifyThis" = "Уведомлять по этому лимиту";
 "panel.rule.current" = "Сейчас %@, уведомление при %d%%.";
+"settings.updates" = "Обновления";
+"settings.updates.version" = "AgentBar %@";
+"settings.updates.check" = "Проверить обновления";
+"settings.updates.auto" = "Проверять автоматически (раз в сутки)";
+"settings.updates.upToDate" = "Актуальная версия · проверено %@";
+"update.available" = "Доступно обновление %@";
+"update.install" = "Обновить";
+"update.installing" = "Установка…";
+"update.notes" = "Что нового";
+"update.error.noAsset" = "В релизе нет файла AgentBar.zip.";
+"update.error.badArchive" = "Скачанный архив повреждён.";
+"update.error.checksum" = "Контрольная сумма не совпала — загрузка отброшена.";
+"update.error.install" = "Не удалось установить: %@";
