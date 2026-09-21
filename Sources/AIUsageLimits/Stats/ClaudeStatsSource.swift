@@ -36,11 +36,14 @@ enum ClaudeStatsSource {
     }
 
     /// Parses transcript lines. One API response is written as several lines (one per content block) that share
-    /// `message.id` and `usage`, so usage is counted once per message id and tool calls are summed across lines.
+    /// `message.id`; early lines may carry a preliminary `output_tokens` (streaming), so every field is the maximum
+    /// across the message's lines. Tool calls are summed. `lineCountedTokens` keeps the per-line sum that
+    /// Claude Code's own `/stats` reports, for comparison.
     static func parse(_ data: Data) -> [UsageRecord] {
         var byMessage: [String: UsageRecord] = [:]
         var order: [String] = []
         let usageMarker = Data("\"usage\"".utf8)
+        func int(_ k: String, in d: [String: Any]) -> Int { (d[k] as? NSNumber)?.intValue ?? 0 }
         for line in data.split(separator: UInt8(ascii: "\n")) {
             guard line.range(of: usageMarker) != nil,
                   let json = try? JSONSerialization.jsonObject(with: line) as? [String: Any],
@@ -53,22 +56,35 @@ enum ClaudeStatsSource {
             let toolCalls = (message["content"] as? [[String: Any]])?.filter { $0["type"] as? String == "tool_use" }.count ?? 0
             let msgId = (message["id"] as? String) ?? UUID().uuidString
             let key = msgId + "|" + ((json["requestId"] as? String) ?? "")
-            if var existing = byMessage[key] {
-                existing.toolCalls += toolCalls
-                byMessage[key] = existing
+            let cacheCreation = usage["cache_creation"] as? [String: Any] ?? [:]
+            let input = int("input_tokens", in: usage)
+            let output = int("output_tokens", in: usage)
+            let cacheWrite = int("cache_creation_input_tokens", in: usage)
+            let cacheWrite1h = int("ephemeral_1h_input_tokens", in: cacheCreation)
+            let cacheRead = int("cache_read_input_tokens", in: usage)
+            let lineTokens = input + output + cacheWrite + cacheRead
+
+            if var r = byMessage[key] {
+                r.inputTokens = max(r.inputTokens, input)
+                r.outputTokens = max(r.outputTokens, output)
+                r.cacheWriteTokens = max(r.cacheWriteTokens, cacheWrite)
+                r.cacheWrite1hTokens = max(r.cacheWrite1hTokens, cacheWrite1h)
+                r.cacheReadTokens = max(r.cacheReadTokens, cacheRead)
+                r.toolCalls += toolCalls
+                r.lineCountedTokens += lineTokens
+                byMessage[key] = r
                 continue
             }
-            func int(_ k: String, in d: [String: Any]) -> Int { (d[k] as? NSNumber)?.intValue ?? 0 }
-            let cacheCreation = usage["cache_creation"] as? [String: Any] ?? [:]
             var record = UsageRecord(timestamp: ts, model: model)
-            record.inputTokens = int("input_tokens", in: usage)
-            record.outputTokens = int("output_tokens", in: usage)
-            record.cacheWriteTokens = int("cache_creation_input_tokens", in: usage)
-            record.cacheWrite1hTokens = int("ephemeral_1h_input_tokens", in: cacheCreation)
-            record.cacheReadTokens = int("cache_read_input_tokens", in: usage)
+            record.inputTokens = input
+            record.outputTokens = output
+            record.cacheWriteTokens = cacheWrite
+            record.cacheWrite1hTokens = cacheWrite1h
+            record.cacheReadTokens = cacheRead
             record.project = json["cwd"] as? String
             record.session = json["sessionId"] as? String
             record.toolCalls = toolCalls
+            record.lineCountedTokens = lineTokens
             record.id = key
             byMessage[key] = record
             order.append(key)

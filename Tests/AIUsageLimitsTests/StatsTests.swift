@@ -4,16 +4,18 @@ import XCTest
 final class ClaudeStatsParserTests: XCTestCase {
     private let lines = """
     {"type":"user","timestamp":"2026-09-21T13:05:50.000Z","sessionId":"s1","message":{"role":"user","content":"hi"}}
-    {"type":"assistant","timestamp":"2026-09-21T13:05:57.921Z","sessionId":"s1","requestId":"req_1","cwd":"/Users/x/proj","message":{"id":"msg_1","model":"claude-opus-5","usage":{"input_tokens":2,"cache_creation_input_tokens":26467,"cache_read_input_tokens":38440,"output_tokens":346,"cache_creation":{"ephemeral_1h_input_tokens":26467,"ephemeral_5m_input_tokens":0}},"content":[{"type":"text","text":"a"}]}}
+    {"type":"assistant","timestamp":"2026-09-21T13:05:57.921Z","sessionId":"s1","requestId":"req_1","cwd":"/Users/x/proj","message":{"id":"msg_1","model":"claude-opus-5","usage":{"input_tokens":2,"cache_creation_input_tokens":26467,"cache_read_input_tokens":38440,"output_tokens":3,"cache_creation":{"ephemeral_1h_input_tokens":26467,"ephemeral_5m_input_tokens":0}},"content":[{"type":"thinking","thinking":"a"}]}}
     {"type":"assistant","timestamp":"2026-09-21T13:05:57.921Z","sessionId":"s1","requestId":"req_1","cwd":"/Users/x/proj","message":{"id":"msg_1","model":"claude-opus-5","usage":{"input_tokens":2,"cache_creation_input_tokens":26467,"cache_read_input_tokens":38440,"output_tokens":346},"content":[{"type":"tool_use","name":"Bash"},{"type":"tool_use","name":"Read"}]}}
     {"type":"assistant","timestamp":"2026-09-21T13:06:10.000Z","sessionId":"s1","requestId":"req_2","message":{"id":"msg_2","model":"<synthetic>","usage":{"input_tokens":0,"output_tokens":0},"content":[]}}
     {"type":"assistant","timestamp":"2026-09-21T13:07:00.000Z","sessionId":"s1","requestId":"req_3","message":{"id":"msg_3","model":"claude-haiku-4-5-20251001","usage":{"input_tokens":100,"output_tokens":50},"content":[{"type":"text","text":"b"}]}}
     """
 
-    func testCountsUsageOncePerMessageAndSumsToolCalls() {
+    func testCountsUsageOncePerMessageTakingFinalValues() {
         let records = ClaudeStatsSource.parse(Data(lines.utf8))
         XCTAssertEqual(records.count, 2)
         let first = records[0]
+        // Two lines: preliminary output 3, final 346; Claude Code style per-line sum counts both.
+        XCTAssertEqual(first.lineCountedTokens, (2 + 26467 + 38440 + 3) + (2 + 26467 + 38440 + 346))
         XCTAssertEqual(first.model, "claude-opus-5")
         XCTAssertEqual(first.inputTokens, 2)
         XCTAssertEqual(first.outputTokens, 346)
@@ -103,6 +105,8 @@ final class PricingAndAggregatorTests: XCTestCase {
         XCTAssertEqual(all.totals.costUSD, 15, accuracy: 0.0001)
         XCTAssertEqual(all.sessions, 2)
         XCTAssertEqual(all.byDay.count, 2)
+        XCTAssertEqual(all.byDay.last?.byModel.map(\.model), ["claude-opus-5", "mystery"])
+        XCTAssertEqual(all.byDay.last?.calls, 2)
         XCTAssertEqual(all.firstDate, b.timestamp)
     }
 }

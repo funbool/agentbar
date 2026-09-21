@@ -80,3 +80,10 @@
 "stats.cursor.choiceBody" = "События использования скачиваются из дашборда Cursor и кэшируются на этом Mac; дальше догружаются только новые. Загрузить всю историю один раз или только текущий биллинг-цикл?";
 "stats.cursor.loadAll" = "Загрузить всю историю";
 "stats.cursor.loadCycle" = "Только текущий цикл";
+"stats.tokens.lineCounted" = "Claude Code /stats: %@";
+"stats.tokens.lineCountedHelp" = "Claude Code считает каждую строку транскрипта; ответ из нескольких блоков учитывается несколько раз.";
+"stats.note.lineCounted" = "Claude Code в /stats показал бы %@ токенов: он считает каждую строку транскрипта, а ответ из нескольких блоков (thinking, текст, вызовы инструментов) записан несколькими строками с одним и тем же usage. При учёте каждого ответа один раз получается %@ — столько и биллит API.";
+"stats.metric.cost" = "$";
+"stats.metric.tokens" = "Токены";
+"stats.metric.calls" = "Запросы";
+"stats.otherModels" = "прочие";

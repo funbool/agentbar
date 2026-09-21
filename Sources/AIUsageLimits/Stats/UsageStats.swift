@@ -20,6 +20,8 @@ struct UsageRecord: Codable, Equatable, Sendable {
     var toolCalls: Int = 0
     /// Provider-side identity (Claude message id + request id) used to drop duplicates across files.
     var id: String? = nil
+    /// Tokens as counted per transcript line (Claude Code's `/stats` method, which double counts multi-block replies).
+    var lineCountedTokens: Int = 0
 
     var totalTokens: Int { inputTokens + outputTokens + cacheWriteTokens + cacheReadTokens }
 }
@@ -44,6 +46,7 @@ struct TokenTotals: Equatable, Sendable {
     /// Tokens whose model has no known price (excluded from `costUSD`).
     var unpricedTokens = 0
     var calls = 0
+    var lineCounted = 0
 
     var total: Int { input + output + cacheWrite + cacheRead }
 
@@ -53,6 +56,7 @@ struct TokenTotals: Equatable, Sendable {
         cacheWrite += r.cacheWriteTokens
         cacheRead += r.cacheReadTokens
         calls += 1
+        lineCounted += r.lineCountedTokens
         if let cost { costUSD += cost } else { unpricedTokens += r.totalTokens }
     }
 }
@@ -63,11 +67,21 @@ struct ModelStat: Identifiable, Equatable, Sendable {
     var id: String { model }
 }
 
+struct DayModelStat: Identifiable, Equatable, Sendable {
+    let model: String
+    var costUSD: Double
+    var tokens: Int
+    var calls: Int
+    var id: String { model }
+}
+
 struct DayStat: Identifiable, Equatable, Sendable {
     let day: Date
-    let costUSD: Double
-    let tokens: Int
+    var byModel: [DayModelStat]
     var id: Date { day }
+    var costUSD: Double { byModel.reduce(0) { $0 + $1.costUSD } }
+    var tokens: Int { byModel.reduce(0) { $0 + $1.tokens } }
+    var calls: Int { byModel.reduce(0) { $0 + $1.calls } }
 }
 
 struct ProjectStat: Identifiable, Equatable, Sendable {
@@ -102,7 +116,7 @@ enum StatsAggregator {
     ) -> StatsReport {
         var totals = TokenTotals()
         var models: [String: TokenTotals] = [:]
-        var days: [Date: (Double, Int)] = [:]
+        var days: [Date: [String: DayModelStat]] = [:]
         var projects: [String: TokenTotals] = [:]
         var sessions = Set<String>()
         var toolCalls = 0
@@ -113,8 +127,11 @@ enum StatsAggregator {
             totals.add(r, cost: cost)
             models[r.model, default: TokenTotals()].add(r, cost: cost)
             let day = calendar.startOfDay(for: r.timestamp)
-            let d = days[day, default: (0, 0)]
-            days[day] = (d.0 + (cost ?? 0), d.1 + r.totalTokens)
+            var entry = days[day]?[r.model] ?? DayModelStat(model: r.model, costUSD: 0, tokens: 0, calls: 0)
+            entry.costUSD += cost ?? 0
+            entry.tokens += r.totalTokens
+            entry.calls += 1
+            days[day, default: [:]][r.model] = entry
             if let p = r.project { projects[p, default: TokenTotals()].add(r, cost: cost) }
             if let s = r.session { sessions.insert(s) }
             toolCalls += r.toolCalls
@@ -126,7 +143,8 @@ enum StatsAggregator {
             totals: totals,
             byModel: models.map { ModelStat(model: $0.key, totals: $0.value) }
                 .sorted { ($0.totals.costUSD, $0.totals.total) > ($1.totals.costUSD, $1.totals.total) },
-            byDay: days.map { DayStat(day: $0.key, costUSD: $0.value.0, tokens: $0.value.1) }.sorted { $0.day < $1.day },
+            byDay: days.map { DayStat(day: $0.key, byModel: $0.value.values.sorted { $0.model < $1.model }) }
+                .sorted { $0.day < $1.day },
             byProject: projects.map { ProjectStat(project: $0.key, totals: $0.value) }
                 .sorted { ($0.totals.costUSD, $0.totals.total) > ($1.totals.costUSD, $1.totals.total) },
             sessions: sessions.count,

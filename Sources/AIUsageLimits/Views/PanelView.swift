@@ -5,6 +5,7 @@ struct PanelView: View {
     @Environment(StatsStore.self) private var stats
     @Environment(\.openWindow) private var openWindow
     @State private var now = Date()
+    @State private var panelWindow: NSWindow?
 
     private let clock = Timer.publish(every: 30, on: .main, in: .common).autoconnect()
 
@@ -25,8 +26,7 @@ struct PanelView: View {
                     now: now,
                     onStats: {
                         stats.selectedProvider = provider
-                        openWindow(id: "stats")
-                        NSApp.activate(ignoringOtherApps: true)
+                        open("stats")
                     })
                 if provider != providers.last { Divider() }
             }
@@ -35,11 +35,19 @@ struct PanelView: View {
         }
         .padding(14)
         .frame(width: 320)
+        .background(WindowAccessor { panelWindow = $0 })
         .onAppear {
             now = Date()
             Task { await store.refreshAll() }
         }
         .onReceive(clock) { now = $0 }
+    }
+
+    /// Opens a regular window and dismisses the menu bar panel so it doesn't linger over it.
+    private func open(_ id: String) {
+        panelWindow?.close()
+        openWindow(id: id)
+        NSApp.activate(ignoringOtherApps: true)
     }
 
     private var footer: some View {
@@ -58,8 +66,7 @@ struct PanelView: View {
             .help(L("panel.refresh"))
             .disabled(store.isRefreshing)
             Button {
-                openWindow(id: "settings")
-                NSApp.activate(ignoringOtherApps: true)
+                open("settings")
             } label: {
                 Image(systemName: "gearshape")
             }

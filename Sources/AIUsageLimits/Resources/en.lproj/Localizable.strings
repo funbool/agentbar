@@ -80,3 +80,10 @@
 "stats.cursor.choiceBody" = "Usage events are downloaded from your Cursor dashboard and cached on this Mac; later refreshes only fetch new events. Load everything once, or only the current billing cycle?";
 "stats.cursor.loadAll" = "Load all history";
 "stats.cursor.loadCycle" = "Only current cycle";
+"stats.tokens.lineCounted" = "Claude Code /stats: %@";
+"stats.tokens.lineCountedHelp" = "Claude Code counts every transcript line; a reply with several blocks is counted several times.";
+"stats.note.lineCounted" = "Claude Code's /stats would report %@ tokens: it counts every transcript line, and a reply with several content blocks (thinking, text, tool calls) is written as several lines sharing one usage record. Counting each reply once gives %@, which is what the API bills.";
+"stats.metric.cost" = "$";
+"stats.metric.tokens" = "Tokens";
+"stats.metric.calls" = "Requests";
+"stats.otherModels" = "other";
