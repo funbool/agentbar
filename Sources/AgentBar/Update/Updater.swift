@@ -31,8 +31,8 @@ enum UpdateError: Error, LocalizedError {
 @MainActor
 @Observable
 final class Updater {
-    static let repo = "funbool/agentbar"
-    static let assetName = "AgentBar.zip"
+    nonisolated static let repo = "funbool/agentbar"
+    nonisolated static let assetName = "AgentBar.zip"
     static let checkInterval: TimeInterval = 24 * 3600
 
     enum Phase: Equatable { case idle, checking, downloading(Double), installing, failed(String) }
@@ -216,7 +216,7 @@ final class Updater {
         p.executableURL = URL(fileURLWithPath: "/bin/sh")
         p.arguments = ["-c", script]
         try p.run()
-        NSApp.terminate(nil)
+        if NSApp?.isRunning == true { NSApp.terminate(nil) } else { exit(0) }
     }
 
     private static func removeQuarantine(_ url: URL) {

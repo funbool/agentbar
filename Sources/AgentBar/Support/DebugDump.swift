@@ -7,23 +7,26 @@ enum DebugDump {
 
     static func runIfRequested() {
         let args = CommandLine.arguments
+        setvbuf(stdout, nil, _IONBF, 0) // debug modes may exit abruptly; don't lose buffered output
         guard args.contains("--dump") || args.contains("--raw") || args.contains("--stats") || args.contains("--cursor-events") || args.contains("--update") else { return }
         if args.contains("--stats") { dumpStats(); exit(0) }
         if args.contains("--update") {
             // Headless end-to-end update: check → download → verify → swap → relaunch.
-            let sem = DispatchSemaphore(value: 0)
+            // Updater is main-actor isolated, so spin the run loop instead of blocking the main thread.
+            var done = false
             Task { @MainActor in
                 let updater = Updater()
                 print("current \(updater.currentVersion)")
                 await updater.check()
                 if case .failed(let m) = updater.phase { print("check failed: \(m)") }
-                guard let rel = updater.available else { print("no update available"); sem.signal(); return }
+                guard let rel = updater.available else { print("no update available"); done = true; return }
                 print("available \(rel.version) \(rel.zipURL)")
                 await updater.installAvailable()
                 if case .failed(let m) = updater.phase { print("install failed: \(m)") }
-                sem.signal()
+                done = true
             }
-            sem.wait(); exit(0)
+            while !done { RunLoop.main.run(mode: .default, before: Date().addingTimeInterval(0.1)) }
+            exit(0)
         }
         if args.contains("--cursor-events") {
             let sem = DispatchSemaphore(value: 0)
