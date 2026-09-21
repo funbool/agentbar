@@ -13,6 +13,7 @@ rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp "$BIN_DIR/AIUsageLimits" "$APP/Contents/MacOS/AIUsageLimits"
 cp Packaging/Info.plist "$APP/Contents/Info.plist"
+cp Packaging/AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
 # SwiftPM puts processed resources into a .bundle next to the binary
 if [ -d "$BIN_DIR/AIUsageLimits_AIUsageLimits.bundle" ]; then
   cp -R "$BIN_DIR/AIUsageLimits_AIUsageLimits.bundle" "$APP/Contents/Resources/"

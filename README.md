@@ -35,6 +35,11 @@ The prompt can come back after Claude Code rotates its token; that's expected.
   (50–95 %), provider visibility, language (system / English / Русский), launch at login.
 - One notification per limit window per reset cycle.
 
+## App icon
+
+The icon source is `Packaging/AppIcon.svg`; `scripts/make-icon.sh` renders it into `Packaging/AppIcon.icns`
+(all sizes 16–1024 incl. @2x), which `build.sh` copies into the bundle.
+
 ## Development
 
 ```bash
