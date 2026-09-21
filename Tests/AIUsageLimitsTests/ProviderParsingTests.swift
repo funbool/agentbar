@@ -11,7 +11,10 @@ final class ClaudeProviderTests: XCTestCase {
         let snap = try ClaudeProvider.parse(try fixture("claude_usage"), plan: "max")
         XCTAssertEqual(snap.provider, .claude)
         XCTAssertEqual(snap.plan, "Max")
-        XCTAssertEqual(snap.windows.map(\.kind), [.fiveHour, .weekly, .weeklyOpus])
+        XCTAssertEqual(snap.windows.map(\.kind), [.fiveHour, .weekly, .weeklyOpus, .weeklyScoped])
+        XCTAssertEqual(snap.windows[3].label, "Fable")
+        XCTAssertEqual(snap.windows[3].usedPercent, 53)
+        XCTAssertEqual(snap.windows[3].id, "weeklyScoped-Fable")
         XCTAssertEqual(snap.windows[0].usedPercent, 34.2)
         XCTAssertEqual(snap.windows[1].usedPercent, 61)
         XCTAssertEqual(snap.windows[0].resetsAt, Formatters.isoDate("2026-09-22T05:00:00Z"))
@@ -56,13 +59,23 @@ final class CodexProviderTests: XCTestCase {
 
 final class CursorProviderTests: XCTestCase {
     func testParsesPlanAndOnDemand() throws {
-        let snap = try CursorProvider.parse(try fixture("cursor_usage_summary"))
+        let snap = try CursorProvider.parse(try fixture("cursor_usage_summary"), sand: try fixture("cursor_sand_usage"))
         XCTAssertEqual(snap.plan, "Pro")
-        XCTAssertEqual(snap.windows.map(\.kind), [.monthly, .onDemand])
+        XCTAssertEqual(snap.windows.map(\.kind), [.monthly, .autoComposer, .apiModels, .onDemand, .grok])
         XCTAssertEqual(snap.windows[0].usedPercent, 61.7)
         XCTAssertEqual(snap.windows[0].detail, "$12.34 / $20")
         XCTAssertEqual(snap.windows[0].resetsAt, Formatters.isoDate("2026-10-01T00:00:00Z"))
-        XCTAssertEqual(snap.windows[1].usedPercent, 7, accuracy: 0.001)
+        XCTAssertEqual(snap.windows[1].usedPercent, 20.1)
+        XCTAssertEqual(snap.windows[2].usedPercent, 41.6)
+        XCTAssertEqual(snap.windows[3].usedPercent, 7, accuracy: 0.001)
+        XCTAssertEqual(snap.windows[4].usedPercent, 12.5)
+        // No nextResetTimestampUtc → period start + 7 days.
+        XCTAssertEqual(snap.windows[4].resetsAt, Formatters.isoDate("2026-09-24T00:00:00Z"))
+    }
+
+    func testGrokSkippedWithoutIncludedLimit() {
+        let json = #"{"usagePercent":0,"hasNonZeroIncludedLimit":false}"#
+        XCTAssertNil(CursorProvider.grokWindow(Data(json.utf8)))
     }
 
     func testOnDemandSkippedWhenDisabled() throws {

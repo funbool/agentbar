@@ -31,6 +31,15 @@ enum Formatters {
         return f.string(from: date)
     }
 
+    /// "22 Sep, 14:20" style; drops the year unless the date is in another year.
+    static func dateTime(_ date: Date, locale: Locale = .current, now: Date = Date()) -> String {
+        let sameYear = Calendar.current.isDate(date, equalTo: now, toGranularity: .year)
+        let f = DateFormatter()
+        f.locale = locale
+        f.setLocalizedDateFormatFromTemplate(sameYear ? "d MMM HH:mm" : "d MMM yyyy HH:mm")
+        return f.string(from: date)
+    }
+
     static func time(_ date: Date, locale: Locale = .current) -> String {
         let f = DateFormatter()
         f.locale = locale

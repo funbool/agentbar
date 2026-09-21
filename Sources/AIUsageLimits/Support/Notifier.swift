@@ -42,7 +42,7 @@ final class Notifier {
 
     nonisolated static func dedupeKey(_ provider: Provider, _ window: UsageWindow) -> String {
         let reset = window.resetsAt.map { String(Int($0.timeIntervalSince1970)) } ?? "none"
-        return "\(provider.rawValue)|\(window.kind.rawValue)|\(reset)"
+        return "\(provider.rawValue)|\(window.id)|\(reset)"
     }
 
     func check(snapshots: [ProviderSnapshot], threshold: Int) {
@@ -63,7 +63,7 @@ final class Notifier {
         let content = UNMutableNotificationContent()
         content.title = String(
             format: L("notification.title"),
-            provider.displayName, L(window.kind.titleKey), Formatters.percent(window.usedPercent))
+            provider.displayName, window.title, Formatters.percent(window.usedPercent))
         if let reset = window.resetsAt, let remaining = Formatters.remaining(until: reset) {
             content.body = String(format: L("notification.body"), remaining)
         } else {
@@ -73,8 +73,4 @@ final class Notifier {
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: nil)
         UNUserNotificationCenter.current().add(request)
     }
-}
-
-extension UsageWindow.Kind {
-    var titleKey: String { "window.\(rawValue)" }
 }

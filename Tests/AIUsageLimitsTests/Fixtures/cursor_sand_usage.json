@@ -1,0 +1,8 @@
+{
+  "currentPeriodStart": "2026-09-17T00:00:00Z",
+  "cursorPlanName": "Ultra",
+  "grokPlanLabel": "Grok Bot Plan",
+  "hasAvailableUsage": true,
+  "hasNonZeroIncludedLimit": true,
+  "usagePercent": 12.5
+}

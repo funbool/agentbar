@@ -3,5 +3,13 @@
   "seven_day": {"utilization": 61, "resets_at": "2026-09-25T12:00:00Z"},
   "seven_day_opus": {"utilization": 12.5, "resets_at": "2026-09-25T12:00:00Z"},
   "seven_day_sonnet": null,
+  "limits": [
+    {"group": "session", "kind": "session", "percent": 34.2, "resets_at": "2026-09-22T05:00:00Z", "scope": null},
+    {"group": "weekly", "kind": "weekly_all", "percent": 61, "resets_at": "2026-09-25T12:00:00Z", "scope": null},
+    {"group": "weekly", "kind": "weekly_scoped", "percent": 53, "resets_at": "2026-09-25T12:00:00Z",
+     "scope": {"model": {"display_name": "Fable", "id": null}, "surface": null}},
+    {"group": "weekly", "kind": "weekly_scoped", "percent": 12.5, "resets_at": "2026-09-25T12:00:00Z",
+     "scope": {"model": {"display_name": "Opus", "id": "opus"}, "surface": null}}
+  ],
   "extra_usage": {"is_enabled": false}
 }

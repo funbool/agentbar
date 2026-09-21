@@ -11,9 +11,12 @@
 "window.weeklyOpus" = "Неделя · Opus";
 "window.weeklySonnet" = "Неделя · Sonnet";
 "window.monthly" = "Месячный план";
+"window.weeklyScoped" = "Неделя · %@";
+"window.autoComposer" = "Auto + Composer";
+"window.apiModels" = "API-модели";
+"window.grok" = "Grok Bot · неделя";
 "window.onDemand" = "Сверх плана";
 "window.resetsIn" = "сброс через %@";
-"window.resetsOn" = "сброс %@";
 "window.ready" = "готово";
 
 "error.notLoggedIn" = "Нет входа — откройте %@";

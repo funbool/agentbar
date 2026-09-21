@@ -8,7 +8,7 @@ struct WindowRowView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack(alignment: .firstTextBaseline) {
-                Text(L(window.kind.titleKey))
+                Text(window.title)
                     .font(.callout)
                 Spacer()
                 if let detail = window.detail {
@@ -43,14 +43,10 @@ struct WindowRowView: View {
 
     private var resetText: String {
         guard let reset = window.resetsAt else { return " " }
-        switch window.kind {
-        case .monthly, .onDemand:
-            return String(format: L("window.resetsOn"), Formatters.shortDate(reset, locale: L10n.locale))
-        default:
-            if let remaining = Formatters.remaining(until: reset, now: now) {
-                return String(format: L("window.resetsIn"), remaining)
-            }
-            return L("window.ready")
+        let absolute = Formatters.dateTime(reset, locale: L10n.locale, now: now)
+        if let remaining = Formatters.remaining(until: reset, now: now) {
+            return String(format: L("window.resetsIn"), remaining) + " · " + absolute
         }
+        return L("window.ready")
     }
 }

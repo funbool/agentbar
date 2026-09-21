@@ -11,11 +11,14 @@ struct CodexProvider: UsageProvider {
     }
 
     func fetch() async throws -> ProviderSnapshot {
-        guard let creds = Self.loadCredentials() else { throw ProviderError.notLoggedIn }
+        try Self.parse(try await Self.rawUsage())
+    }
+
+    static func rawUsage() async throws -> Data {
+        guard let creds = loadCredentials() else { throw ProviderError.notLoggedIn }
         var headers = ["Authorization": "Bearer \(creds.accessToken)", "User-Agent": "AIUsageLimits"]
         if let accountId = creds.accountId { headers["ChatGPT-Account-Id"] = accountId }
-        let data = try await HTTP.json(Self.usageURL, headers: headers)
-        return try Self.parse(data)
+        return try await HTTP.json(usageURL, headers: headers)
     }
 
     // MARK: - Credentials

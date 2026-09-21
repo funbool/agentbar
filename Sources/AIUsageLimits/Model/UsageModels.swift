@@ -26,23 +26,41 @@ enum Provider: String, CaseIterable, Codable, Identifiable, Sendable {
 /// One rate-limit window (e.g. Claude 5h, Codex weekly, Cursor monthly plan).
 struct UsageWindow: Equatable, Identifiable, Sendable {
     enum Kind: String, Sendable {
-        case fiveHour, weekly, weeklyOpus, weeklySonnet, monthly, onDemand
+        case fiveHour, weekly, weeklyOpus, weeklySonnet
+        /// Weekly window scoped to one model (e.g. "Fable"); `label` carries the model name.
+        case weeklyScoped
+        case monthly, onDemand
+        /// Cursor: Auto + Composer share of the included plan.
+        case autoComposer
+        /// Cursor: named (API) models share of the included plan.
+        case apiModels
+        /// Cursor: Grok Bot weekly included usage.
+        case grok
     }
 
     let kind: Kind
+    /// Model/feature name for kinds whose title depends on data (weeklyScoped).
+    let label: String?
     /// 0...100
     let usedPercent: Double
     let resetsAt: Date?
     /// Extra text such as "$12.30 / $20.00".
     let detail: String?
 
-    var id: String { kind.rawValue }
+    var id: String { label.map { "\(kind.rawValue)-\($0)" } ?? kind.rawValue }
 
-    init(kind: Kind, usedPercent: Double, resetsAt: Date? = nil, detail: String? = nil) {
+    init(kind: Kind, label: String? = nil, usedPercent: Double, resetsAt: Date? = nil, detail: String? = nil) {
         self.kind = kind
+        self.label = label
         self.usedPercent = min(max(usedPercent, 0), 100)
         self.resetsAt = resetsAt
         self.detail = detail
+    }
+
+    /// Localized row title.
+    var title: String {
+        let base = L("window.\(kind.rawValue)")
+        return label.map { String(format: base, $0) } ?? base
     }
 }
 

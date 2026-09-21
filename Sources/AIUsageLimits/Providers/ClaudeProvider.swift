@@ -14,12 +14,16 @@ struct ClaudeProvider: UsageProvider {
 
     func fetch() async throws -> ProviderSnapshot {
         guard let creds = Self.loadCredentials() else { throw ProviderError.notLoggedIn }
-        let data = try await HTTP.json(Self.usageURL, headers: [
+        return try Self.parse(try await Self.rawUsage(creds), plan: creds.subscriptionType)
+    }
+
+    static func rawUsage(_ creds: Credentials? = nil) async throws -> Data {
+        guard let creds = creds ?? loadCredentials() else { throw ProviderError.notLoggedIn }
+        return try await HTTP.json(usageURL, headers: [
             "Authorization": "Bearer \(creds.accessToken)",
-            "anthropic-beta": Self.betaHeader,
-            "User-Agent": "claude-code/\(Self.claudeCodeVersion())",
+            "anthropic-beta": betaHeader,
+            "User-Agent": "claude-code/\(claudeCodeVersion())",
         ])
-        return try Self.parse(data, plan: creds.subscriptionType)
     }
 
     // MARK: - Credentials
@@ -69,8 +73,35 @@ struct ClaudeProvider: UsageProvider {
         add("seven_day", .weekly)
         add("seven_day_opus", .weeklyOpus)
         add("seven_day_sonnet", .weeklySonnet)
+        windows += scopedWeeklyWindows(json["limits"] as? [[String: Any]], existing: windows)
         guard !windows.isEmpty else { throw ProviderError.badResponse("Claude usage: no windows in response") }
         return ProviderSnapshot(provider: .claude, windows: windows, plan: plan.map(Self.planLabel))
+    }
+
+    /// Newer response shape: `limits[]` entries with `kind == "weekly_scoped"` name the model they apply to
+    /// (`scope.model.display_name`, e.g. "Fable"). Flat `seven_day_opus/sonnet` windows take precedence when present.
+    static func scopedWeeklyWindows(_ limits: [[String: Any]]?, existing: [UsageWindow]) -> [UsageWindow] {
+        guard let limits else { return [] }
+        let covered: Set<String> = Set(existing.compactMap {
+            switch $0.kind {
+            case .weeklyOpus: "opus"
+            case .weeklySonnet: "sonnet"
+            default: nil
+            }
+        })
+        var seen: Set<String> = []
+        return limits.compactMap { entry in
+            guard entry["kind"] as? String == "weekly_scoped",
+                  let pct = (entry["percent"] as? NSNumber)?.doubleValue,
+                  let scope = entry["scope"] as? [String: Any],
+                  let model = scope["model"] as? [String: Any],
+                  let name = (model["display_name"] as? String)?.trimmingCharacters(in: .whitespaces), !name.isEmpty
+            else { return nil }
+            let key = name.lowercased()
+            guard key != "all models", !covered.contains(key), seen.insert(key).inserted else { return nil }
+            return UsageWindow(kind: .weeklyScoped, label: name, usedPercent: pct,
+                               resetsAt: Formatters.isoDate(entry["resets_at"] as? String))
+        }
     }
 
     private static func planLabel(_ raw: String) -> String {
