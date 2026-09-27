@@ -5,14 +5,28 @@ import SwiftUI
 struct WindowAccessor: NSViewRepresentable {
     let onWindow: (NSWindow) -> Void
 
+    final class Coordinator {
+        weak var delivered: NSWindow?
+    }
+
+    func makeCoordinator() -> Coordinator { Coordinator() }
+
     func makeNSView(context: Context) -> NSView {
         let view = NSView()
-        DispatchQueue.main.async { if let w = view.window { onWindow(w) } }
+        DispatchQueue.main.async { deliver(from: view, context.coordinator) }
         return view
     }
 
     func updateNSView(_ nsView: NSView, context: Context) {
-        DispatchQueue.main.async { if let w = nsView.window { onWindow(w) } }
+        DispatchQueue.main.async { deliver(from: nsView, context.coordinator) }
+    }
+
+    /// SwiftUI re-runs `updateNSView` on every state change — hovering a chart fires it continuously — so the
+    /// callback must only run when the hosting window actually changes.
+    private func deliver(from view: NSView, _ coordinator: Coordinator) {
+        guard let window = view.window, coordinator.delivered !== window else { return }
+        coordinator.delivered = window
+        onWindow(window)
     }
 }
 
@@ -24,9 +38,10 @@ enum DockPresence {
     private static var observer: NSObjectProtocol?
 
     static func track(_ window: NSWindow) {
-        if !tracked.contains(where: { $0 === window }) {
-            tracked.append(window)
-        }
+        // Repeatedly flipping the activation policy breaks the menu bar item, so a window is only ever
+        // taken on once and the policy is changed only when it actually differs.
+        guard !tracked.contains(where: { $0 === window }) else { return }
+        tracked.append(window)
         if observer == nil {
             // One global observer: any window closing triggers a re-check after AppKit finished hiding it.
             observer = NotificationCenter.default.addObserver(
@@ -35,7 +50,9 @@ enum DockPresence {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) { Task { @MainActor in update() } }
             }
         }
-        NSApp.setActivationPolicy(.regular)
+        if NSApp.activationPolicy() != .regular {
+            NSApp.setActivationPolicy(.regular)
+        }
         NSApp.activate(ignoringOtherApps: true)
     }
 
@@ -43,7 +60,8 @@ enum DockPresence {
         tracked.removeAll { !$0.isVisible }
         guard tracked.isEmpty, NSApp.activationPolicy() != .accessory else { return }
         NSApp.setActivationPolicy(.accessory)
-        // macOS keeps the Dock tile until the app stops being frontmost; hand focus to the next app.
-        NSApp.hide(nil)
+        // The Dock keeps the tile until the app stops being frontmost, so hand focus to the next app.
+        // Never `hide(nil)` here: that hides the status item's window along with everything else.
+        NSApp.deactivate()
     }
 }
