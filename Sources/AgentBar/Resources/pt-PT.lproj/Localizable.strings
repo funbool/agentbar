@@ -97,3 +97,9 @@
 "update.error.badArchive" = "O arquivo descarregado é inválido.";
 "update.error.checksum" = "Soma de verificação incorreta — descarga rejeitada.";
 "update.error.install" = "Não foi possível instalar: %@";
+"settings.bars" = "Barras de progresso";
+"settings.bars.threshold" = "Cor por limiares de utilização";
+"settings.bars.pace" = "Cor por ritmo até ao reinício";
+"settings.bars.thresholdHint" = "Verde abaixo de 60 %, amarelo até ao limiar de notificação, vermelho acima.";
+"settings.bars.paceHint" = "Uma marca em cada barra mostra que parte da janela já decorreu. Abaixo da marca a barra fica verde, ao nível dela amarela e acima vermelha: a esse ritmo o limite esgota-se antes do reinício.";
+"window.pace" = "Ritmo uniforme: %@";

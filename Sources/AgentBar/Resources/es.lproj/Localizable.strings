@@ -97,3 +97,9 @@
 "update.error.badArchive" = "El archivo descargado no es válido.";
 "update.error.checksum" = "La suma de verificación no coincide — descarga descartada.";
 "update.error.install" = "No se pudo instalar: %@";
+"settings.bars" = "Barras de progreso";
+"settings.bars.threshold" = "Color por umbrales de uso";
+"settings.bars.pace" = "Color por ritmo hasta el reinicio";
+"settings.bars.thresholdHint" = "Verde por debajo del 60 %, amarillo hasta el umbral de notificación, rojo por encima.";
+"settings.bars.paceHint" = "Una marca en cada barra indica qué parte de la ventana ya ha transcurrido. Por debajo de la marca la barra es verde, a su altura amarilla y por encima roja: a ese ritmo el límite se agotará antes del reinicio.";
+"window.pace" = "Ritmo uniforme: %@";

@@ -57,7 +57,7 @@ AgentBar nie odświeża tokenów. Jeśli dostawca pokazuje *sesja wygasła*, otw
 ## Panel
 
 - Kliknij ikonę w pasku menu: wszyscy dostawcy są odświeżani natychmiast; w trakcie ładowania widać poprzednie wartości.
-- Paski są zielone poniżej 60 %, żółte powyżej, czerwone po osiągnięciu progu powiadomienia.
+- Każdy pasek ma kreskę w miejscu, do którego upłynęła już odpowiednia część okna — to tempo, przy którym limitu starczy dokładnie do resetu. Poniżej kreski pasek jest zielony, na jej poziomie żółty, powyżej czerwony (limit skończy się przed czasem). W Ustawienia → Ogólne można wrócić do progów użycia.
 - Każdy limit pokazuje pozostały czas i dokładny moment resetu, np. *reset za 2h 15m · czw, 24 wrz 20:00*.
 - Dzwonek obok limitu oznacza, że powiadomienia dla niego są włączone (konfiguruje się je w Ustawieniach).
 - Stopka: statystyki · odśwież · ustawienia · zakończ.
@@ -85,7 +85,7 @@ Indeksowanie 700 MB transkrypcji zajmuje ok. 10 sekund za pierwszym razem i znac
 
 ## Ustawienia
 
-- **Ogólne** — interwał odświeżania (wył. / 1 / 5 / 15 / 30 / 60 min), widoczni dostawcy, język, uruchamianie przy logowaniu, aktualizacje.
+- **Ogólne** — interwał odświeżania (wył. / 1 / 5 / 15 / 30 / 60 min), kolor pasków (tempo lub progi), widoczni dostawcy, język, uruchamianie przy logowaniu, aktualizacje.
 - **Powiadomienia** — przełącznik główny, próg domyślny, reguły dla limitów.
 
 ## Aktualizacje

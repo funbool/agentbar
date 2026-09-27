@@ -97,3 +97,9 @@
 "update.error.badArchive" = "ダウンロードしたアーカイブが無効です。";
 "update.error.checksum" = "チェックサムが一致しません — ダウンロードを破棄しました。";
 "update.error.install" = "インストールできませんでした: %@";
+"settings.bars" = "使用量バー";
+"settings.bars.threshold" = "使用量のしきい値で色分け";
+"settings.bars.pace" = "リセットまでのペースで色分け";
+"settings.bars.thresholdHint" = "60 % 未満は緑、通知しきい値までは黄、それを超えると赤。";
+"settings.bars.paceHint" = "各バーの目盛りは、ウィンドウのどれだけが経過したかを示します。目盛りより下なら緑、同じ位置なら黄、上なら赤 — このペースではリセット前に上限へ達します。";
+"window.pace" = "均等ペース: %@";

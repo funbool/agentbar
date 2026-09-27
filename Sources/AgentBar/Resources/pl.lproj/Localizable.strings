@@ -97,3 +97,9 @@
 "update.error.badArchive" = "Pobrane archiwum jest nieprawidłowe.";
 "update.error.checksum" = "Suma kontrolna się nie zgadza — pobrany plik odrzucono.";
 "update.error.install" = "Nie udało się zainstalować: %@";
+"settings.bars" = "Paski postępu";
+"settings.bars.threshold" = "Kolor według progów użycia";
+"settings.bars.pace" = "Kolor według tempa do resetu";
+"settings.bars.thresholdHint" = "Zielony poniżej 60 %, żółty do progu powiadomienia, czerwony powyżej.";
+"settings.bars.paceHint" = "Kreska na każdym pasku pokazuje, jaka część okna już minęła. Poniżej kreski pasek jest zielony, na jej poziomie żółty, powyżej czerwony — w takim tempie limit skończy się przed resetem.";
+"window.pace" = "Równe tempo: %@";

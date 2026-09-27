@@ -31,6 +31,17 @@ struct SettingsView: View {
                 .onChange(of: settings.refreshInterval) { store.applySchedule() }
             }
 
+            Section(L("settings.bars")) {
+                Picker(L("settings.bars"), selection: $settings.barColorMode) {
+                    ForEach(BarColorMode.allCases) { mode in
+                        Text(L("settings.bars.\(mode.rawValue)")).tag(mode)
+                    }
+                }
+                .labelsHidden()
+                Text(L(settings.barColorMode == .pace ? "settings.bars.paceHint" : "settings.bars.thresholdHint"))
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+
             Section(L("settings.providers")) {
                 ForEach(Provider.allCases) { provider in
                     Toggle(provider.displayName, isOn: Binding(

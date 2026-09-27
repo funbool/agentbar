@@ -57,7 +57,7 @@ AgentBar does not refresh tokens itself. If a provider shows *session expired*, 
 ## The panel
 
 - Click the menu bar icon: every provider is refreshed immediately; cached values are shown while loading.
-- Bars are green below 60 %, yellow above, red once the notification threshold is reached.
+- Each bar carries a mark at the share of the window that has already passed — the pace at which the limit lasts exactly until the reset. Below the mark the bar is green, level with it yellow, above it red (the limit will run out early). Settings → General switches back to plain usage thresholds.
 - Each limit shows the time left and the exact reset moment, e.g. *resets in 2h 15m · Thu 24 Sep 20:00*.
 - A bell next to a limit means notifications are on for it (configured in Settings).
 - Footer: statistics · refresh · settings · quit.
@@ -85,7 +85,7 @@ Indexing 700 MB of transcripts takes about 10 seconds the first time and well un
 
 ## Settings
 
-- **General** — auto-refresh interval (off / 1 / 5 / 15 / 30 / 60 min), visible providers, language, launch at login, updates.
+- **General** — auto-refresh interval (off / 1 / 5 / 15 / 30 / 60 min), bar colouring (pace or thresholds), visible providers, language, launch at login, updates.
 - **Notifications** — global switch, default threshold, per-limit rules.
 
 ## Updates

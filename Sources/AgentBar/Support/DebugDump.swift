@@ -58,7 +58,9 @@ enum DebugDump {
                     print("[\(provider.id.rawValue)] plan=\(snap.plan ?? "-")")
                     for w in snap.windows {
                         let reset = w.resetsAt.map { ISO8601DateFormatter().string(from: $0) } ?? "-"
-                        print("  \(w.kind.rawValue): \(Formatters.percent(w.usedPercent)) resets=\(reset) \(w.detail ?? "")")
+                        let pace = w.pacePercent().map { String(format: "pace=%.1f%%", $0) } ?? "pace=-"
+                        let state = w.paceState().map { "\($0)" } ?? "-"
+                        print("  \(w.kind.rawValue): \(Formatters.percent(w.usedPercent)) \(pace) \(state) resets=\(reset) \(w.detail ?? "")")
                     }
                 } catch {
                     print("[\(provider.id.rawValue)] ERROR: \(error)")

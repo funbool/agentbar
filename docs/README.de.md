@@ -57,7 +57,7 @@ AgentBar erneuert keine Tokens. Zeigt ein Anbieter *Sitzung abgelaufen*, öffne 
 ## Das Panel
 
 - Klick auf das Menüleisten-Symbol: alle Anbieter werden sofort aktualisiert; während des Ladens bleiben die letzten Werte sichtbar.
-- Balken sind grün unter 60 %, gelb darüber, rot ab der Benachrichtigungsschwelle.
+- Jeder Balken trägt eine Marke an dem Anteil des Fensters, der schon vergangen ist — das Tempo, bei dem das Limit genau bis zum Reset reicht. Unter der Marke ist der Balken grün, auf gleicher Höhe gelb, darüber rot (das Limit wäre vorzeitig aufgebraucht). Unter Einstellungen → Allgemein lässt sich wieder nach Nutzungsschwellen einfärben.
 - Jedes Limit zeigt die Restzeit und den genauen Reset-Zeitpunkt, z. B. *Reset in 2h 15m · Do, 24. Sep 20:00*.
 - Eine Glocke neben einem Limit bedeutet, dass Benachrichtigungen dafür aktiv sind (konfiguriert in den Einstellungen).
 - Fußzeile: Statistik · Aktualisieren · Einstellungen · Beenden.
@@ -85,7 +85,7 @@ Das Indexieren von 700 MB Transkripten dauert beim ersten Mal etwa 10 Sekunden, 
 
 ## Einstellungen
 
-- **Allgemein** — Aktualisierungsintervall (aus / 1 / 5 / 15 / 30 / 60 Min.), sichtbare Anbieter, Sprache, Start bei Anmeldung, Updates.
+- **Allgemein** — Aktualisierungsintervall (aus / 1 / 5 / 15 / 30 / 60 Min.), Balkenfarbe (Tempo oder Schwellen), sichtbare Anbieter, Sprache, Start bei Anmeldung, Updates.
 - **Benachrichtigungen** — Hauptschalter, Standardschwelle, Regeln pro Limit.
 
 ## Updates

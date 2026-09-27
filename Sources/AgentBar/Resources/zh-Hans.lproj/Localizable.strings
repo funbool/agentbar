@@ -97,3 +97,9 @@
 "update.error.badArchive" = "下载的压缩包无效。";
 "update.error.checksum" = "校验和不匹配 — 已丢弃下载。";
 "update.error.install" = "无法安装：%@";
+"settings.bars" = "进度条";
+"settings.bars.threshold" = "按用量阈值着色";
+"settings.bars.pace" = "按距重置的节奏着色";
+"settings.bars.thresholdHint" = "低于 60 % 为绿色，到通知阈值为黄色，超过为红色。";
+"settings.bars.paceHint" = "每根进度条上的刻度表示该窗口已过去的比例。低于刻度为绿色，与之齐平为黄色，高于为红色——按此节奏额度会在重置前用完。";
+"window.pace" = "均匀节奏：%@";

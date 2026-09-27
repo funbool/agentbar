@@ -97,3 +97,9 @@
 "update.error.badArchive" = "Das heruntergeladene Archiv ist ungültig.";
 "update.error.checksum" = "Prüfsumme stimmt nicht — Download verworfen.";
 "update.error.install" = "Installation fehlgeschlagen: %@";
+"settings.bars" = "Fortschrittsbalken";
+"settings.bars.threshold" = "Farbe nach Nutzungsschwellen";
+"settings.bars.pace" = "Farbe nach Tempo bis zum Reset";
+"settings.bars.thresholdHint" = "Grün unter 60 %, gelb bis zur Benachrichtigungsschwelle, rot darüber.";
+"settings.bars.paceHint" = "Eine Marke auf jedem Balken zeigt, wie viel des Fensters schon vergangen ist. Unter der Marke ist der Balken grün, auf gleicher Höhe gelb, darüber rot — in diesem Tempo ist das Limit vor dem Reset aufgebraucht.";
+"window.pace" = "Gleichmäßiges Tempo: %@";

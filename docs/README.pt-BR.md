@@ -57,7 +57,7 @@ O AgentBar não renova tokens. Se um provedor mostrar *sessão expirada*, abra a
 ## O painel
 
 - Clique no ícone da barra de menus: todos os provedores são atualizados na hora; enquanto carrega, os valores anteriores continuam visíveis.
-- As barras ficam verdes abaixo de 60 %, amarelas acima e vermelhas ao atingir o limiar de notificação.
+- Cada barra tem uma marca na parte da janela que já passou: o ritmo em que o limite dura exatamente até o reinício. Abaixo da marca a barra fica verde, no nível dela amarela e acima vermelha (o limite acaba antes da hora). Em Configurações → Geral dá para voltar aos limiares de uso.
 - Cada limite mostra o tempo restante e o momento exato do reinício, p. ex. *reinicia em 2h 15m · qui, 24 set 20:00*.
 - Um sino ao lado de um limite indica que as notificações estão ativas para ele (configuradas nas Configurações).
 - Rodapé: estatísticas · atualizar · configurações · sair.
@@ -85,7 +85,7 @@ Indexar 700 MB de transcrições leva uns 10 segundos na primeira vez e bem meno
 
 ## Configurações
 
-- **Geral** — intervalo de atualização (desligado / 1 / 5 / 15 / 30 / 60 min), provedores visíveis, idioma, abrir ao fazer login, atualizações.
+- **Geral** — intervalo de atualização (desligado / 1 / 5 / 15 / 30 / 60 min), cor das barras (ritmo ou limiares), provedores visíveis, idioma, abrir ao fazer login, atualizações.
 - **Notificações** — chave geral, limiar padrão, regras por limite.
 
 ## Atualizações

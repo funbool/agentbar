@@ -1,5 +1,11 @@
 import Foundation
 
+/// Pairs two optionals, or nothing when either is missing.
+private func zip2<A, B>(_ a: A?, _ b: B?) -> (A, B)? {
+    guard let a, let b else { return nil }
+    return (a, b)
+}
+
 struct CursorProvider: UsageProvider {
     let id: Provider = .cursor
 
@@ -70,6 +76,8 @@ struct CursorProvider: UsageProvider {
         }
         let individual = json["individualUsage"] as? [String: Any] ?? [:]
         let cycleEnd = Formatters.isoDate(json["billingCycleEnd"] as? String)
+        let cycleStart = Formatters.isoDate(json["billingCycleStart"] as? String)
+        let cycleSeconds = zip2(cycleStart, cycleEnd).map { $1.timeIntervalSince($0) }
         var windows: [UsageWindow] = []
 
         // Cursor tracks two included pools (its own models vs third-party API models) and reports each as a
@@ -78,10 +86,10 @@ struct CursorProvider: UsageProvider {
         var summary: String?
         if let plan = individual["plan"] as? [String: Any] {
             if let auto = (plan["autoPercentUsed"] as? NSNumber)?.doubleValue {
-                windows.append(UsageWindow(kind: .cursorModels, usedPercent: auto, resetsAt: cycleEnd))
+                windows.append(UsageWindow(kind: .cursorModels, usedPercent: auto, resetsAt: cycleEnd, windowSeconds: cycleSeconds))
             }
             if let api = (plan["apiPercentUsed"] as? NSNumber)?.doubleValue {
-                windows.append(UsageWindow(kind: .apiModels, usedPercent: api, resetsAt: cycleEnd))
+                windows.append(UsageWindow(kind: .apiModels, usedPercent: api, resetsAt: cycleEnd, windowSeconds: cycleSeconds))
             }
             if let usedCents = (plan["used"] as? NSNumber)?.doubleValue, usedCents > 0 {
                 summary = String(format: L("cursor.spent"), Formatters.usd(usedCents / 100))
@@ -96,6 +104,7 @@ struct CursorProvider: UsageProvider {
                 kind: .onDemand,
                 usedPercent: usedCents / limitCents * 100,
                 resetsAt: cycleEnd,
+                windowSeconds: cycleSeconds,
                 detail: "\(Formatters.usd(usedCents / 100)) / \(Formatters.usd(limitCents / 100))"))
         }
         if let sand, let grok = grokWindow(sand) { windows.append(grok) }
@@ -111,8 +120,10 @@ struct CursorProvider: UsageProvider {
         else { return nil }
         let hasLimit = (json["hasNonZeroIncludedLimit"] as? Bool) ?? !((json["includedLimitZero"] as? Bool) ?? false)
         guard hasLimit else { return nil }
+        let periodStart = Formatters.isoDate(json["currentPeriodStart"] as? String)
         let reset = Formatters.isoDate(json["nextResetTimestampUtc"] as? String)
-            ?? Formatters.isoDate(json["currentPeriodStart"] as? String).map { $0.addingTimeInterval(7 * 86400) }
-        return UsageWindow(kind: .grok, usedPercent: pct, resetsAt: reset)
+            ?? periodStart.map { $0.addingTimeInterval(7 * 86400) }
+        let seconds = zip2(periodStart, reset).map { $1.timeIntervalSince($0) }
+        return UsageWindow(kind: .grok, usedPercent: pct, resetsAt: reset, windowSeconds: seconds)
     }
 }

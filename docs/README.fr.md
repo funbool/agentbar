@@ -57,7 +57,7 @@ AgentBar ne renouvelle pas les jetons. Si un fournisseur indique *session expir�
 ## Le panneau
 
 - Cliquez sur l'icône de la barre de menus : tous les fournisseurs sont actualisés immédiatement ; les valeurs en cache restent visibles pendant le chargement.
-- Les barres sont vertes sous 60 %, jaunes au-dessus, rouges dès que le seuil de notification est atteint.
+- Chaque barre porte un repère à la part de la fenêtre déjà écoulée — le rythme auquel la limite dure exactement jusqu'à la réinitialisation. Sous le repère la barre est verte, à son niveau jaune, au-dessus rouge (la limite s'épuisera avant l'heure). Réglages → Général permet de revenir aux seuils d'utilisation.
 - Chaque limite affiche le temps restant et l'instant exact de réinitialisation, par ex. *réinitialisation dans 2h 15m · jeu. 24 sept. 20:00*.
 - Une cloche à côté d'une limite signifie que les notifications sont actives pour elle (configurées dans les réglages).
 - Pied de panneau : statistiques · actualiser · réglages · quitter.
@@ -85,7 +85,7 @@ Indexer 700 Mo de transcriptions prend environ 10 secondes la première fois et 
 
 ## Réglages
 
-- **Général** — intervalle d'actualisation (désactivé / 1 / 5 / 15 / 30 / 60 min), fournisseurs visibles, langue, lancement à l'ouverture de session, mises à jour.
+- **Général** — intervalle d'actualisation (désactivé / 1 / 5 / 15 / 30 / 60 min), couleur des barres (rythme ou seuils), fournisseurs visibles, langue, lancement à l'ouverture de session, mises à jour.
 - **Notifications** — interrupteur global, seuil par défaut, règles par limite.
 
 ## Mises à jour

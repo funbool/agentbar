@@ -57,7 +57,7 @@ AgentBar no renueva tokens. Si un proveedor muestra *sesión caducada*, abre ese
 ## El panel
 
 - Haz clic en el icono de la barra de menús: todos los proveedores se actualizan al instante; mientras carga se muestran los valores anteriores.
-- Las barras son verdes por debajo del 60 %, amarillas por encima y rojas al alcanzar el umbral de notificación.
+- Cada barra lleva una marca en la parte de la ventana ya transcurrida: el ritmo con el que el límite dura justo hasta el reinicio. Por debajo de la marca la barra es verde, a su altura amarilla y por encima roja (el límite se agotará antes). En Ajustes → General se puede volver a los umbrales de uso.
 - Cada límite muestra el tiempo restante y el momento exacto del reinicio, p. ej. *se reinicia en 2h 15m · jue 24 sept 20:00*.
 - Una campana junto a un límite indica que las notificaciones están activas para él (se configuran en Ajustes).
 - Pie del panel: estadísticas · actualizar · ajustes · salir.
@@ -85,7 +85,7 @@ Indexar 700 MB de transcripciones tarda unos 10 segundos la primera vez y mucho 
 
 ## Ajustes
 
-- **General**: intervalo de actualización (desactivado / 1 / 5 / 15 / 30 / 60 min), proveedores visibles, idioma, inicio al iniciar sesión, actualizaciones.
+- **General**: intervalo de actualización (desactivado / 1 / 5 / 15 / 30 / 60 min), color de las barras (ritmo o umbrales), proveedores visibles, idioma, inicio al iniciar sesión, actualizaciones.
 - **Notificaciones**: interruptor global, umbral por defecto, reglas por límite.
 
 ## Actualizaciones

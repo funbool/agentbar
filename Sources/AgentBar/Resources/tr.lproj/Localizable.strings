@@ -97,3 +97,9 @@
 "update.error.badArchive" = "İndirilen arşiv geçersiz.";
 "update.error.checksum" = "Sağlama toplamı uyuşmuyor — indirme atıldı.";
 "update.error.install" = "Yüklenemedi: %@";
+"settings.bars" = "İlerleme çubukları";
+"settings.bars.threshold" = "Renk kullanım eşiklerine göre";
+"settings.bars.pace" = "Renk sıfırlanmaya kalan tempoya göre";
+"settings.bars.thresholdHint" = "60 % altında yeşil, bildirim eşiğine kadar sarı, üstünde kırmızı.";
+"settings.bars.paceHint" = "Her çubuktaki işaret, pencerenin ne kadarının geçtiğini gösterir. İşaretin altında çubuk yeşil, hizasında sarı, üstünde kırmızıdır — bu tempoda limit sıfırlanmadan önce tükenir.";
+"window.pace" = "Düzenli tempo: %@";

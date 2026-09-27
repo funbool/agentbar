@@ -97,3 +97,9 @@
 "update.error.badArchive" = "A letöltött archívum érvénytelen.";
 "update.error.checksum" = "Az ellenőrző összeg nem egyezik — a letöltés elvetve.";
 "update.error.install" = "A telepítés nem sikerült: %@";
+"settings.bars" = "Folyamatjelzők";
+"settings.bars.threshold" = "Szín használati küszöbök szerint";
+"settings.bars.pace" = "Szín a nullázásig tartó ütem szerint";
+"settings.bars.thresholdHint" = "Zöld 60 % alatt, sárga az értesítési küszöbig, piros fölötte.";
+"settings.bars.paceHint" = "Minden sávon egy jelölés mutatja, az időablak mekkora része telt el. A jelölés alatt a sáv zöld, vele egy szinten sárga, fölötte piros — ebben az ütemben a keret a nullázás előtt elfogy.";
+"window.pace" = "Egyenletes ütem: %@";

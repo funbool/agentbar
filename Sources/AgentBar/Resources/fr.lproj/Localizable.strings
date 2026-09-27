@@ -97,3 +97,9 @@
 "update.error.badArchive" = "L'archive téléchargée est invalide.";
 "update.error.checksum" = "Somme de contrôle incorrecte — téléchargement rejeté.";
 "update.error.install" = "Installation impossible : %@";
+"settings.bars" = "Barres de progression";
+"settings.bars.threshold" = "Couleur selon les seuils d'utilisation";
+"settings.bars.pace" = "Couleur selon le rythme jusqu'à la réinitialisation";
+"settings.bars.thresholdHint" = "Vert sous 60 %, jaune jusqu'au seuil de notification, rouge au-dessus.";
+"settings.bars.paceHint" = "Un repère sur chaque barre indique la part de la fenêtre déjà écoulée. Sous le repère la barre est verte, à son niveau jaune, au-dessus rouge : à ce rythme la limite s'épuisera avant la réinitialisation.";
+"window.pace" = "Rythme régulier : %@";

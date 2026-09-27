@@ -102,3 +102,9 @@
 "update.error.badArchive" = "Downloaded archive is invalid.";
 "update.error.checksum" = "Checksum mismatch — download discarded.";
 "update.error.install" = "Could not install: %@";
+"settings.bars" = "Progress bars";
+"settings.bars.threshold" = "Colour by usage thresholds";
+"settings.bars.pace" = "Colour by pace to reset";
+"settings.bars.thresholdHint" = "Green below 60 %, yellow up to the notification threshold, red above it.";
+"settings.bars.paceHint" = "A mark on each bar shows how much of the window has already passed. Below the mark the bar is green, level with it yellow, above it red — at that rate the limit runs out before it resets.";
+"window.pace" = "Even pace: %@";

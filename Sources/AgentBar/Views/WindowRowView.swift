@@ -6,6 +6,8 @@ struct WindowRowView: View {
     let settings: Settings
     let now: Date
     private var threshold: Int { settings.effectiveThreshold(for: provider, window) }
+    /// The even-pace mark, only in pace mode.
+    private var pace: Double? { settings.barColorMode == .pace ? window.pacePercent(now: now) : nil }
     private var notifies: Bool { settings.notificationsEnabled && settings.rule(for: provider, window).enabled }
 
     var body: some View {
@@ -36,9 +38,17 @@ struct WindowRowView: View {
                     Capsule()
                         .fill(barColor)
                         .frame(width: max(4, geo.size.width * window.usedPercent / 100))
+                    if let pace {
+                        // Where usage would sit if the limit were spent evenly across the window.
+                        Capsule()
+                            .fill(Color.primary.opacity(0.65))
+                            .frame(width: 2, height: 12)
+                            .offset(x: min(max(geo.size.width * pace / 100 - 1, 0), geo.size.width - 2))
+                    }
                 }
             }
             .frame(height: 6)
+            .help(paceHelp)
             Text(resetText)
                 .font(.caption2)
                 .foregroundStyle(.tertiary)
@@ -46,9 +56,22 @@ struct WindowRowView: View {
     }
 
     private var barColor: Color {
+        // Pace mode falls back to thresholds for windows whose span is unknown or that just reset.
+        if settings.barColorMode == .pace, let state = window.paceState(now: now) {
+            switch state {
+            case .ahead: return .green
+            case .onPace: return .yellow
+            case .behind: return .red
+            }
+        }
         if window.usedPercent >= Double(threshold) { return .red }
         if window.usedPercent >= 60 { return .yellow }
         return .green
+    }
+
+    private var paceHelp: String {
+        guard let pace else { return "" }
+        return String(format: L("window.pace"), Formatters.percent(pace))
     }
 
     private var resetText: String {

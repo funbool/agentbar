@@ -120,7 +120,11 @@ struct ClaudeProvider: UsageProvider {
             guard let w = json[key] as? [String: Any] else { return }
             let pct = (w["utilization"] as? NSNumber)?.doubleValue
             guard let pct else { return }
-            windows.append(UsageWindow(kind: kind, usedPercent: pct, resetsAt: Formatters.isoDate(w["resets_at"] as? String)))
+            windows.append(UsageWindow(
+                kind: kind,
+                usedPercent: pct,
+                resetsAt: Formatters.isoDate(w["resets_at"] as? String),
+                windowSeconds: Self.windowSeconds(for: kind)))
         }
         add("five_hour", .fiveHour)
         add("seven_day", .weekly)
@@ -153,7 +157,17 @@ struct ClaudeProvider: UsageProvider {
             let key = name.lowercased()
             guard key != "all models", !covered.contains(key), seen.insert(key).inserted else { return nil }
             return UsageWindow(kind: .weeklyScoped, label: name, usedPercent: pct,
-                               resetsAt: Formatters.isoDate(entry["resets_at"] as? String))
+                               resetsAt: Formatters.isoDate(entry["resets_at"] as? String),
+                               windowSeconds: windowSeconds(for: .weeklyScoped))
+        }
+    }
+
+    /// Claude's windows have fixed spans that the API does not spell out.
+    static func windowSeconds(for kind: UsageWindow.Kind) -> TimeInterval? {
+        switch kind {
+        case .fiveHour: 5 * 3600
+        case .weekly, .weeklyOpus, .weeklySonnet, .weeklyScoped: 7 * 86400
+        default: nil
         }
     }
 

@@ -6,6 +6,15 @@ enum RefreshInterval: Int, CaseIterable, Identifiable {
     var id: Int { rawValue }
 }
 
+/// How progress bars pick their colour.
+enum BarColorMode: String, CaseIterable, Identifiable {
+    /// Fixed usage thresholds: green below 60 %, yellow up to the notification threshold, red above.
+    case threshold
+    /// Compared with the share of the window already elapsed.
+    case pace
+    var id: String { rawValue }
+}
+
 enum AppLanguage: String, CaseIterable, Identifiable {
     case system
     case en, ru, uk, de, fr, es, ptPT = "pt-PT", ptBR = "pt-BR", pl, cs, hu, tr, kk, hi, ja, zhHans = "zh-Hans", zhHant = "zh-Hant"
@@ -67,6 +76,9 @@ final class Settings {
     var language: AppLanguage {
         didSet { defaults.set(language.rawValue, forKey: "language") }
     }
+    var barColorMode: BarColorMode {
+        didSet { defaults.set(barColorMode.rawValue, forKey: "barColorMode") }
+    }
     private(set) var enabledProviders: Set<Provider> {
         didSet { defaults.set(enabledProviders.map(\.rawValue).sorted(), forKey: "enabledProviders") }
     }
@@ -84,6 +96,7 @@ final class Settings {
         notificationsEnabled = defaults.bool(forKey: "notificationsEnabled")
         notificationThreshold = defaults.object(forKey: "notificationThreshold") as? Int ?? 80
         language = AppLanguage(rawValue: defaults.string(forKey: "language") ?? "") ?? .system
+        barColorMode = BarColorMode(rawValue: defaults.string(forKey: "barColorMode") ?? "") ?? .pace
         if let stored = defaults.stringArray(forKey: "enabledProviders") {
             enabledProviders = Set(stored.compactMap(Provider.init(rawValue:)))
         } else {

@@ -62,7 +62,7 @@ struct CodexProvider: UsageProvider {
             let seconds = (w["limit_window_seconds"] as? NSNumber)?.doubleValue
             let kind: UsageWindow.Kind = seconds.map { $0 > 24 * 3600 ? .weekly : .fiveHour } ?? fallbackKind
             let reset = (w["reset_at"] as? NSNumber).map { Date(timeIntervalSince1970: $0.doubleValue) }
-            windows.append(UsageWindow(kind: kind, usedPercent: pct, resetsAt: reset))
+            windows.append(UsageWindow(kind: kind, usedPercent: pct, resetsAt: reset, windowSeconds: seconds))
         }
         guard !windows.isEmpty else { throw ProviderError.badResponse("Codex usage: no rate_limit windows") }
         let plan = (json["plan_type"] as? String).map { $0.prefix(1).uppercased() + $0.dropFirst() }

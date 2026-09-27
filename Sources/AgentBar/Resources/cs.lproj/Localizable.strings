@@ -97,3 +97,9 @@
 "update.error.badArchive" = "Stažený archiv je neplatný.";
 "update.error.checksum" = "Kontrolní součet nesouhlasí — stažení zahozeno.";
 "update.error.install" = "Instalace se nezdařila: %@";
+"settings.bars" = "Ukazatele využití";
+"settings.bars.threshold" = "Barva podle prahů využití";
+"settings.bars.pace" = "Barva podle tempa do resetu";
+"settings.bars.thresholdHint" = "Zelená pod 60 %, žlutá do prahu oznámení, červená nad ním.";
+"settings.bars.paceHint" = "Značka na každém ukazateli ukazuje, jaká část okna už uplynula. Pod značkou je ukazatel zelený, v její úrovni žlutý, nad ní červený — tímto tempem limit dojde před resetem.";
+"window.pace" = "Rovnoměrné tempo: %@";

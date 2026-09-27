@@ -97,3 +97,9 @@
 "update.error.badArchive" = "下載的壓縮檔無效。";
 "update.error.checksum" = "檢查碼不符 — 已捨棄下載。";
 "update.error.install" = "無法安裝：%@";
+"settings.bars" = "進度條";
+"settings.bars.threshold" = "依用量門檻上色";
+"settings.bars.pace" = "依距重設的節奏上色";
+"settings.bars.thresholdHint" = "低於 60 % 為綠色，到通知門檻為黃色，超過為紅色。";
+"settings.bars.paceHint" = "每根進度條上的刻度表示該視窗已過去的比例。低於刻度為綠色，與之齊平為黃色，高於為紅色——依此節奏額度會在重設前用完。";
+"window.pace" = "均勻節奏：%@";
